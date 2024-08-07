@@ -10,6 +10,10 @@
           <i class="fas fa-heart"></i>
           <strong>Wishlist</strong>
         </span>
+        <span class="navbar-item" @click="goToComparison">
+          <i class="fas fa-exchange-alt"></i>
+          <strong>Comparison</strong>
+        </span>
         <span class="navbar-item" @click="goToCart">
           <i class="fas fa-shopping-cart"></i>
           <strong>Cart</strong>
@@ -29,6 +33,10 @@
         <span class="sidebar-item" @click="goToWishlistAndClose">
           <i class="fas fa-heart"></i>
           <strong>Wishlist</strong>
+        </span>
+        <span class="sidebar-item" @click="goToComparisonAndClose">
+          <i class="fas fa-exchange-alt"></i>
+          <strong>Comparison</strong>
         </span>
         <span class="sidebar-item" @click="goToCartAndClose">
           <i class="fas fa-shopping-cart"></i>
@@ -53,11 +61,10 @@ export default {
   },
   methods: {
 
-     /**
+    /**
      * Toggles the visibility of the sidebar.
      * @function toggleSidebar
      */
-
     toggleSidebar() {
       this.openSidebar = !this.openSidebar;
     },
@@ -66,26 +73,31 @@ export default {
      * Navigates to the product list page.
      * @function goToProductList
      */
-
     goToProductList() {
       this.$router.push('/');
       this.closeSidebar();
     },
 
-     /**
+    /**
      * Navigates to the wishlist page.
      * @function goToWishlist
      */
-
     goToWishlist() {
       this.$router.push('/wishlist');
+    },
+
+    /**
+     * Navigates to the comparison page.
+     * @function goToComparison
+     */
+    goToComparison() {
+      this.$router.push('/comparison');
     },
 
     /**
      * Navigates to the cart page.
      * @function goToCart
      */
-
     goToCart() {
       this.$router.push('/cart');
     },
@@ -94,7 +106,6 @@ export default {
      * Navigates to the login page.
      * @function goToLogin
      */
-
     goToLogin() {
       this.$router.push('/login');
     },
@@ -103,9 +114,17 @@ export default {
      * Navigates to the wishlist page and closes the sidebar.
      * @function goToWishlistAndClose
      */
-
     goToWishlistAndClose() {
       this.goToWishlist();
+      this.closeSidebar();
+    },
+
+    /**
+     * Navigates to the comparison page and closes the sidebar.
+     * @function goToComparisonAndClose
+     */
+    goToComparisonAndClose() {
+      this.goToComparison();
       this.closeSidebar();
     },
 
@@ -122,7 +141,6 @@ export default {
      * Navigates to the login page and closes the sidebar.
      * @function goToLoginAndClose
      */
-    
     goToLoginAndClose() {
       this.goToLogin();
       this.closeSidebar();
@@ -132,7 +150,6 @@ export default {
      * Closes the sidebar.
      * @function closeSidebar
      */
-
     closeSidebar() {
       this.openSidebar = false;
     },
@@ -141,7 +158,6 @@ export default {
      * Handles window resize event to toggle mobile view.
      * @function handleResize
      */
-
     handleResize() {
       this.isMobile = window.innerWidth <= 768;
       if (!this.isMobile) {

@@ -26,8 +26,22 @@ export default {
     };
   },
   methods: {
-    login() {
-      console.log('Login button clicked');
+    async login() {
+      try {
+        const response = await axiosAuth.post('auth/login', {
+          username: this.username,
+          password: this.password,
+        });
+        const token = response.data.token;
+        localStorage.setItem('token', token); 
+        alert('Login successful!');
+        this.$router.push('/'); 
+      } catch (error) {
+        console.error('Login failed:', error);
+        alert('Login failed. Please check your credentials.');
+      }
+
+
 
     },
     goToProductList() {

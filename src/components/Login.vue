@@ -1,3 +1,5 @@
+
+
 <template>
   <div class="login-container">
     <h1>Login Page</h1>
@@ -14,10 +16,11 @@
     </form>
     <button @click="goToProductList" class="back-button">Back to Product List</button>
   </div>
-
 </template>
 
 <script>
+import axiosAuth from '../axiosAuth';
+
 export default {
   data() {
     return {
@@ -40,16 +43,12 @@ export default {
         console.error('Login failed:', error);
         alert('Login failed. Please check your credentials.');
       }
-
-
-
     },
     goToProductList() {
       this.$router.push('/');
     }
   }
 };
-
 </script>
 
 <style scoped>
@@ -113,11 +112,10 @@ input {
 }
 
 .back-button {
-  background: blue;
+  background: #aaa;
 }
 
 .back-button:hover {
-  background: #5ab7f1;
+  background: #888;
 }
-
 </style>

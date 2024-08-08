@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="login-container">
     <h1>Login Page</h1>
@@ -10,7 +8,19 @@
       </div>
       <div class="form-group">
         <label for="password">Password:</label>
-        <input type="password" v-model="password" id="password" required />
+        <div class="password-wrapper">
+          <input
+            :type="passwordFieldType"
+            v-model="password"
+            id="password"
+            required
+          />
+          <font-awesome-icon
+            :icon="passwordVisible ? 'eye-slash' : 'eye'"
+            @click="togglePasswordVisibility"
+            class="toggle-password"
+          />
+        </div>
       </div>
       <button type="submit" class="login-button">Login</button>
     </form>
@@ -24,9 +34,15 @@ import axiosAuth from '../axiosAuth';
 export default {
   data() {
     return {
-      username: '',
-      password: '',
+      username: 'mor_2314',
+      password: '83r5^_',  
+      passwordVisible: false, 
     };
+  },
+  computed: {
+    passwordFieldType() {
+      return this.passwordVisible ? 'text' : 'password';
+    },
   },
   methods: {
     async login() {
@@ -38,7 +54,7 @@ export default {
         const token = response.data.token;
         localStorage.setItem('token', token); 
         alert('Login successful!');
-        this.$router.push('/'); 
+        this.$router.push('/');
       } catch (error) {
         console.error('Login failed:', error);
         alert('Login failed. Please check your credentials.');

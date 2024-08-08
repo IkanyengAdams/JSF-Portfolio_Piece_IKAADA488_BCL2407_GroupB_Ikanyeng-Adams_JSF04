@@ -16,7 +16,7 @@
             required
           />
           <font-awesome-icon
-            :icon="passwordVisible ? 'eye-slash' : 'eye'"
+            :icon="passwordVisible ? 'eye' : 'eye-slash'"
             @click="togglePasswordVisibility"
             class="toggle-password"
           />
@@ -45,6 +45,9 @@ export default {
     },
   },
   methods: {
+    togglePasswordVisibility() {
+      this.passwordVisible = !this.passwordVisible;
+    },
     async login() {
       try {
         const response = await axiosAuth.post('auth/login', {
@@ -111,6 +114,19 @@ input {
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1em;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #325cda;
 }
 
 .login-button, .back-button {

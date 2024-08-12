@@ -42,9 +42,8 @@
           </button>
           <div class="action-buttons">
             <button @click="toggleWishlist(product)" :class="{'active': product.inWishlist}" class="wishlist-button">
-            <i :class="product.inWishlist ? 'fa fa-heart' : 'fa fa-heart-o'"></i>
-          </button>
-
+              <i :class="product.inWishlist ? 'fa fa-heart' : 'fa fa-heart-o'"></i>
+            </button>
             <button @click="toggleCart(product)" :class="{'active': product.inCart}" class="cart-button">
               <i :class="product.inCart ? 'fa fa-shopping-cart' : 'fa fa-cart-plus'"></i>
             </button>
@@ -275,9 +274,17 @@ body {
   border-radius: 0 0.375rem 0.375rem 0;
   padding: 0 0.75rem;
   cursor: pointer;
-
+  transition: background-color 0.2s ease-in-out;
 }
 
+.search-button:hover {
+  background-color: #2563eb;
+}
+
+.sort-select {
+  background-color: #f3f4f6;
+  border-radius: 0.375rem;
+}
 
 i {
   font-size: 1rem;
@@ -392,6 +399,45 @@ i {
   background-color: #2563eb;
 }
 
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.action-buttons button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: color 0.2s ease-in-out;
+}
+
+.wishlist-button i {
+  color: grey;
+}
+
+.wishlist-button.active i {
+  color: red;
+}
+
+.cart-button i {
+  color: grey;
+}
+
+.cart-button.active i {
+  color: blue;
+}
+
+.comparison-button i {
+  color: grey;
+}
+
+.comparison-button.active i {
+  color: blue;
+}
+
 .no-items-message {
   color: blue;
   text-align: center;
@@ -406,5 +452,18 @@ i {
   height: 100vh;
   font-size: 1.5rem;
   color: blue;
+}
+
+.message {
+  text-align: center;
+  background-color: #4caf50;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.5s ease-in-out;
 }
 </style>

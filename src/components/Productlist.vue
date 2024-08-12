@@ -42,8 +42,9 @@
           </button>
           <div class="action-buttons">
             <button @click="toggleWishlist(product)" :class="{'active': product.inWishlist}" class="wishlist-button">
-              <i :class="product.inWishlist ? 'fa fa-heart active' : 'fa fa-heart-o'"></i>
-            </button>
+            <i :class="product.inWishlist ? 'fa fa-heart' : 'fa fa-heart-o'"></i>
+          </button>
+
             <button @click="toggleCart(product)" :class="{'active': product.inCart}" class="cart-button">
               <i :class="product.inCart ? 'fa fa-shopping-cart' : 'fa fa-cart-plus'"></i>
             </button>
@@ -147,6 +148,48 @@ export default {
       router.push(`/product/${productId}`);
     };
 
+    /**
+     * Toggles the wishlist status of a product.
+     * @function toggleWishlist
+     * @param {Object} product - The product to toggle.
+     */
+    const toggleWishlist = (product) => {
+      product.inWishlist = !product.inWishlist;
+      showMessage(product.inWishlist ? 'Added to wishlist' : 'Removed from wishlist');
+    };
+
+    /**
+     * Toggles the cart status of a product.
+     * @function toggleCart
+     * @param {Object} product - The product to toggle.
+     */
+    const toggleCart = (product) => {
+      product.inCart = !product.inCart;
+      showMessage(product.inCart ? 'Added to cart' : 'Removed from cart');
+    };
+
+    /**
+     * Toggles the comparison status of a product.
+     * @function toggleComparison
+     * @param {Object} product - The product to toggle.
+     */
+    const toggleComparison = (product) => {
+      product.inComparison = !product.inComparison;
+      showMessage(product.inComparison ? 'Added to comparison' : 'Removed from comparison');
+    };
+
+    /**
+     * Shows a message and hides it after 1 second.
+     * @function showMessage
+     * @param {string} msg - The message to show.
+     */
+    const showMessage = (msg) => {
+      message.value = msg;
+      setTimeout(() => {
+        message.value = '';
+      }, 1000);
+    };
+
     // Lifecycle hook to fetch products and categories on component mount.
     onMounted(() => {
       fetchProducts();
@@ -165,6 +208,10 @@ export default {
       filterProducts,
       searchProducts,
       viewProduct,
+      toggleWishlist,
+      toggleCart,
+      toggleComparison,
+      message,
     };
   },
 };
@@ -219,7 +266,6 @@ body {
 
 .search-button {
   position: absolute;
-  
   right: 0;
   top: 0;
   bottom: 0;
@@ -233,7 +279,9 @@ body {
 }
 
 
-
+i {
+  font-size: 1rem;
+}
 
 .sort-group {
   display: flex;

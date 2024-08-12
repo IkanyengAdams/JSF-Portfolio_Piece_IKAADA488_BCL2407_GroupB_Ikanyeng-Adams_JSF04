@@ -40,8 +40,20 @@
           <button class="view-button" @click="viewProduct(product.id)">
             <i class="fa fa-eye"></i> View Product
           </button>
+          <div class="action-buttons">
+            <button @click="toggleWishlist(product)" :class="{'active': product.inWishlist}" class="wishlist-button">
+              <i :class="product.inWishlist ? 'fa fa-heart active' : 'fa fa-heart-o'"></i>
+            </button>
+            <button @click="toggleCart(product)" :class="{'active': product.inCart}" class="cart-button">
+              <i :class="product.inCart ? 'fa fa-shopping-cart' : 'fa fa-cart-plus'"></i>
+            </button>
+            <button @click="toggleComparison(product)" :class="{'active': product.inComparison}" class="comparison-button">
+              <i :class="product.inComparison ? 'fa fa-exchange' : 'fa fa-exchange-alt'"></i>
+            </button>
+          </div>
         </div>
       </div>
+      <div v-if="message" class="message">{{ message }}</div>
     </div>
   </div>
 </template>
@@ -60,14 +72,14 @@ export default {
     const categories = ref([]);
     const noItemsFound = ref(false);
     const router = useRouter();
+    const message = ref('');
 
-     /**
+    /**
      * Fetches the list of products from the API and filters them.
      * @async
      * @function fetchProducts
      * @returns {Promise<void>}
      */
-
     const fetchProducts = async () => {
       try {
         const productsResponse = await fetch('https://fakestoreapi.com/products');
@@ -80,13 +92,12 @@ export default {
       }
     };
 
-     /**
+    /**
      * Fetches the list of categories from the API.
      * @async
      * @function fetchCategories
      * @returns {Promise<void>}
      */
-
     const fetchCategories = async () => {
       try {
         const categoriesResponse = await fetch('https://fakestoreapi.com/products/categories');
@@ -100,7 +111,6 @@ export default {
      * Filters the products based on the selected category, search query, and sort option.
      * @function filterProducts
      */
-
     const filterProducts = () => {
       filteredProducts.value = products.value
         .filter(product =>
@@ -124,7 +134,6 @@ export default {
      * Searches the products based on the search query.
      * @function searchProducts
      */
-
     const searchProducts = () => {
       filterProducts();
     };
@@ -134,7 +143,6 @@ export default {
      * @function viewProduct
      * @param {number} productId - The ID of the product to view.
      */
-
     const viewProduct = (productId) => {
       router.push(`/product/${productId}`);
     };
@@ -211,24 +219,21 @@ body {
 
 .search-button {
   position: absolute;
-  margin-right: 115px;
-  top: 0;
+  
   right: 0;
-  height: 100%;
-  width: 40px;
+  top: 0;
+  bottom: 0;
   background-color: #3b82f6;
   color: white;
-  border-left: 0;
+  border: none;
   border-radius: 0 0.375rem 0.375rem 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 0 0.75rem;
   cursor: pointer;
+
 }
 
-.search-button i {
-  font-size: 1rem;
-}
+
+
 
 .sort-group {
   display: flex;

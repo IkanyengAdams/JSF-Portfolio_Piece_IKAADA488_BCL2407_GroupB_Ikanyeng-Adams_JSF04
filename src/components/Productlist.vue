@@ -86,12 +86,29 @@ export default {
       try {
         const productsResponse = await fetch('https://fakestoreapi.com/products');
         products.value = await productsResponse.json();
+        loadStoredItems();
         filterProducts();
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
         loading.value = false;
       }
+    };
+
+    /**
+     * Loads the stored cart, wishlist, and comparison items from localStorage.
+     * @function loadStoredItems
+     */
+    const loadStoredItems = () => {
+      const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+      const storedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      const storedComparison = JSON.parse(localStorage.getItem('comparison')) || [];
+
+      products.value.forEach(product => {
+        product.inCart = storedCart.some(item => item.id === product.id);
+        product.inWishlist = storedWishlist.some(item => item.id === product.id);
+        product.inComparison = storedComparison.some(item => item.id === product.id);
+      });
     };
 
     /**
@@ -156,6 +173,7 @@ export default {
      */
     const toggleWishlist = (product) => {
       product.inWishlist = !product.inWishlist;
+      
       showMessage(product.inWishlist ? 'Added to wishlist' : 'Removed from wishlist');
     };
 
@@ -166,34 +184,8 @@ export default {
      */
     const toggleCart = (product) => {
       product.inCart = !product.inCart;
-      if (product.inCart) {
-        addToCart(product);
-      } else {
-        removeFromCart(product);
-      }
+      
       showMessage(product.inCart ? 'Added to cart' : 'Removed from cart');
-    };
-
-    /**
-     * Adds a product to the cart.
-     * @function addToCart
-     * @param {Object} product - The product to add.
-     */
-    const addToCart = (product) => {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      cart.push(product);
-      localStorage.setItem('cart', JSON.stringify(cart));
-    };
-
-    /**
-     * Removes a product from the cart.
-     * @function removeFromCart
-     * @param {Object} product - The product to remove.
-     */
-    const removeFromCart = (product) => {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const updatedCart = cart.filter(item => item.id !== product.id);
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
     };
 
     /**
@@ -203,8 +195,10 @@ export default {
      */
     const toggleComparison = (product) => {
       product.inComparison = !product.inComparison;
+      updateLocalStorage('comparison', product);
       showMessage(product.inComparison ? 'Added to comparison' : 'Removed from comparison');
     };
+
 
     /**
      * Shows a message and hides it after 1 second.
@@ -243,6 +237,7 @@ export default {
     };
   },
 };
+
 </script>
 
 <style scoped>

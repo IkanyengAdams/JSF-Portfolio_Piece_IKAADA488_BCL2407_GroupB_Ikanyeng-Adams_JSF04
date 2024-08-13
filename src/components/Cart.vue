@@ -21,9 +21,21 @@
 
 <script>
 export default {
-
+  data() {
+    return {
+      cartItems: JSON.parse(localStorage.getItem('cart')) || [],
+    };
+  },
+  computed: {
+    cartTotal() {
+      return this.cartItems.reduce((total, item) => total + item.price, 0).toFixed(2);
+    }
+  },
   methods: {
-    
+    removeFromCart(itemId) {
+      this.cartItems = this.cartItems.filter(item => item.id !== itemId);
+      localStorage.setItem('cart', JSON.stringify(this.cartItems));
+    },
     goToProductList() {
       this.$router.push('/');
     }

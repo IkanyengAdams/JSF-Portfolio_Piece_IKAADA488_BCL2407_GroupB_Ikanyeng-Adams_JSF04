@@ -164,7 +164,34 @@ export default {
      */
     const toggleCart = (product) => {
       product.inCart = !product.inCart;
+      if (product.inCart) {
+        addToCart(product);
+      } else {
+        removeFromCart(product);
+      }
       showMessage(product.inCart ? 'Added to cart' : 'Removed from cart');
+    };
+
+    /**
+     * Adds a product to the cart.
+     * @function addToCart
+     * @param {Object} product - The product to add.
+     */
+    const addToCart = (product) => {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.push(product);
+      localStorage.setItem('cart', JSON.stringify(cart));
+    };
+
+    /**
+     * Removes a product from the cart.
+     * @function removeFromCart
+     * @param {Object} product - The product to remove.
+     */
+    const removeFromCart = (product) => {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const updatedCart = cart.filter(item => item.id !== product.id);
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
     };
 
     /**
@@ -217,6 +244,11 @@ export default {
 </script>
 
 <style scoped>
+/* Your existing CSS */
+</style>
+
+
+<style scoped>
 body {
   background-color: lightblue;
   margin: 0;
@@ -265,21 +297,25 @@ body {
 
 .search-button {
   position: absolute;
-  right: 0;
+  margin-right: 115px;
   top: 0;
-  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 40px;
   background-color: #3b82f6;
   color: white;
-  border: none;
+  border-left: 0;
   border-radius: 0 0.375rem 0.375rem 0;
-  padding: 0 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
 }
 
-.search-button:hover {
-  background-color: #2563eb;
+.search-button i {
+  font-size: 1rem;
 }
+
 
 .sort-select {
   background-color: #f3f4f6;
@@ -416,6 +452,7 @@ i {
 
 .wishlist-button i {
   color: grey;
+
 }
 
 .wishlist-button.active i {

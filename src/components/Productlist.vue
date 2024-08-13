@@ -173,7 +173,7 @@ export default {
      */
     const toggleWishlist = (product) => {
       product.inWishlist = !product.inWishlist;
-      
+      updateLocalStorage('wishlist', product);
       showMessage(product.inWishlist ? 'Added to wishlist' : 'Removed from wishlist');
     };
 
@@ -184,7 +184,7 @@ export default {
      */
     const toggleCart = (product) => {
       product.inCart = !product.inCart;
-      
+      updateLocalStorage('cart', product);
       showMessage(product.inCart ? 'Added to cart' : 'Removed from cart');
     };
 
@@ -199,6 +199,29 @@ export default {
       showMessage(product.inComparison ? 'Added to comparison' : 'Removed from comparison');
     };
 
+    /**
+     * Updates the relevant localStorage array (cart, wishlist, or comparison) based on the product's status.
+     * @function updateLocalStorage
+     * @param {string} key - The key for the localStorage item (e.g., 'cart', 'wishlist', 'comparison').
+     * @param {Object} product - The product to add or remove from localStorage.
+     */
+    const updateLocalStorage = (key, product) => {
+      let storedItems = JSON.parse(localStorage.getItem(key)) || [];
+      if (product[`in${capitalize(key)}`]) {
+        storedItems.push(product);
+      } else {
+        storedItems = storedItems.filter(item => item.id !== product.id);
+      }
+      localStorage.setItem(key, JSON.stringify(storedItems));
+    };
+
+    /**
+     * Capitalizes the first letter of a string.
+     * @function capitalize
+     * @param {string} str - The string to capitalize.
+     * @returns {string} - The capitalized string.
+     */
+    const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
     /**
      * Shows a message and hides it after 1 second.

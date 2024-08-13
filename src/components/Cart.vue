@@ -44,10 +44,48 @@ export default {
 </script>
 
 <style scoped>
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.cart-item img {
+  width: 100px;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+.cart-total {
+  margin-top: 1rem;
+  font-size: 1.25rem;
+}
 
 button {
   background: #325cda;
- 
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #2548a8;
+}
+
+.empty-cart-message {
+  font-size: 1.25rem;
+  color: #ff0000;
+  margin-bottom: 1rem;
 }
 </style>

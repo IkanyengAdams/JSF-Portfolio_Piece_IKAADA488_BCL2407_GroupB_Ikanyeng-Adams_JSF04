@@ -40,15 +40,17 @@
           <button class="view-button" @click="viewProduct(product.id)">
             <i class="fa fa-eye"></i> View Product
           </button>
+          
           <div class="action-buttons">
             <button @click="toggleWishlist(product)" :class="{'active': product.inWishlist}" class="wishlist-button">
-              <i :class="product.inWishlist ? 'fa fa-heart' : 'fa fa-heart-o'"></i>
-            </button>
+            <i :class="product.inWishlist ? 'fa fa-heart' : 'fa fa-heart'"></i>
+          </button>
+
             <button @click="toggleCart(product)" :class="{'active': product.inCart}" class="cart-button">
               <i :class="product.inCart ? 'fa fa-shopping-cart' : 'fa fa-cart-plus'"></i>
             </button>
             <button @click="toggleComparison(product)" :class="{'active': product.inComparison}" class="comparison-button">
-              <i :class="product.inComparison ? 'fa fa-exchange' : 'fa fa-exchange-alt'"></i>
+              <i :class="product.inComparison ? 'fa fa-balance-scale' : 'fa fa-balance-scale-right'"></i>
             </button>
           </div>
         </div>
@@ -452,7 +454,6 @@ i {
 
 .wishlist-button i {
   color: grey;
-
 }
 
 .wishlist-button.active i {

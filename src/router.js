@@ -9,26 +9,48 @@ import Comparison from './components/Comparison.vue';
 const routes = [
   { path: '/', component: Productlist },
   { path: '/product/:id', component: ProductDetail },
-  { path: '/wishlist', component: Wishlist, meta: { requiresAuth: true } },
-  { path: '/cart', component: Cart, meta: { requiresAuth: true } },
+  {
+    path: '/wishlist',
+    component: Wishlist,
+    beforeEnter: (to, from, next) => {
+      if (!localStorage.getItem('token')) {
+        alert('Please log in first');
+        next('/login');
+      } else {
+        next();
+      }
+    },
+  },
+  {
+    path: '/cart',
+    component: Cart,
+    beforeEnter: (to, from, next) => {
+      if (!localStorage.getItem('token')) {
+        alert('Please log in first');
+        next('/login');
+      } else {
+        next();
+      }
+    },
+  },
+  {
+    path: '/comparison',
+    component: Comparison,
+    beforeEnter: (to, from, next) => {
+      if (!localStorage.getItem('token')) {
+        alert('Please log in first');
+        next('/login');
+      } else {
+        next();
+      }
+    },
+  },
   { path: '/login', component: Login },
-  { path: '/comparison', component: Comparison, meta: { requiresAuth: true } }
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-});
-
-router.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  const isAuthenticated = localStorage.getItem('token');
-
-  if (requiresAuth && !isAuthenticated) {
-    next('/login');
-  } else {
-    next();
-  }
 });
 
 export default router;

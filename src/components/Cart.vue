@@ -8,6 +8,11 @@
         <div>
           <h2>{{ item.title }}</h2>
           <p>{{ '$' + item.price }}</p>
+          <div class="quantity-controls">
+            <button @click="decreaseQuantity(item)">-</button>
+            <span>{{ item.quantity }}</span>
+            <button @click="increaseQuantity(item)">+</button>
+          </div>
           <button @click="removeFromCart(item.id)">Remove</button>
         </div>
       </div>
@@ -28,12 +33,25 @@ export default {
   },
   computed: {
     cartTotal() {
-      return this.cartItems.reduce((total, item) => total + item.price, 0).toFixed(2);
+      return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
     }
   },
   methods: {
+    increaseQuantity(item) {
+      item.quantity++;
+      this.updateCart();
+    },
+    decreaseQuantity(item) {
+      if (item.quantity > 1) {
+        item.quantity--;
+        this.updateCart();
+      }
+    },
     removeFromCart(itemId) {
       this.cartItems = this.cartItems.filter(item => item.id !== itemId);
+      this.updateCart();
+    },
+    updateCart() {
       localStorage.setItem('cart', JSON.stringify(this.cartItems));
     },
     goToProductList() {

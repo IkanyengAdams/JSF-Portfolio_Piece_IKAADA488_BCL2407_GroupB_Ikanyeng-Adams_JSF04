@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
-    <h1>Login Page</h1>
-    <form @submit.prevent="login">
+    <h1>{{ isLoggedIn ? 'Logged in' : 'Login Page' }}</h1>
+    <form v-if="!isLoggedIn" @submit.prevent="login">
       <div class="form-group">
         <label for="username">Username:</label>
         <input type="text" v-model="username" id="username" required />
@@ -24,6 +24,7 @@
       </div>
       <button type="submit" class="login-button">Login</button>
     </form>
+    <button v-if="isLoggedIn" @click="logout" class="logout-button">Logout</button>
     <button @click="goToProductList" class="back-button">Back to Product List</button>
   </div>
 </template>
@@ -34,9 +35,10 @@ import axiosAuth from '../axiosAuth';
 export default {
   data() {
     return {
-      username: 'mor_2314',
-      password: '83r5^_',  
+      username: '',
+      password: '',
       passwordVisible: false, 
+      isLoggedIn: !!localStorage.getItem('token'),  // Check if the user is logged in
     };
   },
   computed: {
@@ -56,14 +58,19 @@ export default {
         });
         const token = response.data.token;
         localStorage.setItem('token', token); 
+        this.isLoggedIn = true;
         alert('Login successful!');
-        
-        const redirect = this.$route.query.redirect || '/';
-        this.$router.push(redirect);
+        this.$router.push('/');
       } catch (error) {
         console.error('Login failed:', error);
         alert('Login failed. Please check your credentials.');
       }
+    },
+    logout() {
+      localStorage.removeItem('token');
+      this.isLoggedIn = false;
+      alert('Logged out successfully!');
+      this.$router.push('/');
     },
     goToProductList() {
       this.$router.push('/');
@@ -71,6 +78,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 .login-container {

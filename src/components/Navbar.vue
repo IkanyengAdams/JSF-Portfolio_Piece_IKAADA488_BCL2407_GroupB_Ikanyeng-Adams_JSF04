@@ -1,3 +1,5 @@
+
+Copy code
 <template>
   <header>
     <nav class="navbar">
@@ -18,9 +20,9 @@
           <i class="fas fa-shopping-cart"></i>
           <strong>Cart</strong>
         </span>
-        <span class="navbar-item" @click="goToLogin">
+        <span class="navbar-item" @click="handleLoginClick">
           <i class="fas fa-user"></i>
-          <strong>Login</strong>
+          <strong>{{ isLoggedIn ? 'Logged in' : 'Login' }}</strong>
         </span>
       </div>
       <button class="btn-toggle menu-icon" @click="toggleSidebar">
@@ -42,9 +44,9 @@
           <i class="fas fa-shopping-cart"></i>
           <strong>Cart</strong>
         </span>
-        <span class="sidebar-item" @click="goToLoginAndClose">
+        <span class="sidebar-item" @click="handleLoginClick">
           <i class="fas fa-user"></i>
-          <strong>Login</strong>
+          <strong>{{ isLoggedIn ? 'Logged in' : 'Login' }}</strong>
         </span>
       </div>
     </div>
@@ -56,10 +58,12 @@ export default {
   data() {
     return {
       openSidebar: false,
-      isMobile: window.innerWidth <= 768, 
+      isMobile: window.innerWidth <= 768,
+      isLoggedIn: !!localStorage.getItem('token'),  // Check if the user is logged in
     };
   },
   methods: {
+
     /**
      * Toggles the visibility of the sidebar.
      * @function toggleSidebar
@@ -102,11 +106,15 @@ export default {
     },
 
     /**
-     * Navigates to the login page.
-     * @function goToLogin
+     * Handles login click based on login status.
+     * @function handleLoginClick
      */
-    goToLogin() {
-      this.$router.push('/login');
+    handleLoginClick() {
+      if (this.isLoggedIn) {
+        this.$router.push('/login');  // Redirect to login page where they can log out
+      } else {
+        this.$router.push('/login');  // Redirect to login page
+      }
     },
 
     /**
@@ -137,15 +145,6 @@ export default {
     },
 
     /**
-     * Navigates to the login page and closes the sidebar.
-     * @function goToLoginAndClose
-     */
-    goToLoginAndClose() {
-      this.goToLogin();
-      this.closeSidebar();
-    },
-
-    /**
      * Closes the sidebar.
      * @function closeSidebar
      */
@@ -169,9 +168,15 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize);
+  },
+  watch: {
+    '$route'() {
+      this.isLoggedIn = !!localStorage.getItem('token');  // Update login status on route change
+    }
   }
 };
 </script>
+
 
 <style scoped>
 .navbar {
@@ -273,5 +278,19 @@ export default {
   .navbar-items {
     display: none;
   }
+}
+
+.logout-button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-left: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: darkred;
 }
 </style>

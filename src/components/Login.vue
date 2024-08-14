@@ -57,7 +57,9 @@ export default {
         const token = response.data.token;
         localStorage.setItem('token', token); 
         alert('Login successful!');
-        this.$router.push('/');
+        
+        const redirect = this.$route.query.redirect || '/';
+        this.$router.push(redirect);
       } catch (error) {
         console.error('Login failed:', error);
         alert('Login failed. Please check your credentials.');

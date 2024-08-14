@@ -7,4 +7,10 @@ const axiosAuth = axios.create({
   },
 });
 
+
+export function isLoggedIn() {
+  return !!localStorage.getItem('token');
+}
+
+
 export default axiosAuth;

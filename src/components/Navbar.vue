@@ -56,11 +56,10 @@ export default {
   data() {
     return {
       openSidebar: false,
-      isMobile: window.innerWidth <= 768,
+      isMobile: window.innerWidth <= 768, 
     };
   },
   methods: {
-
     /**
      * Toggles the visibility of the sidebar.
      * @function toggleSidebar

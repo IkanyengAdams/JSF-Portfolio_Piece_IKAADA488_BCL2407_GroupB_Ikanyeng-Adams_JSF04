@@ -1,26 +1,33 @@
 <template>
-  <div>
-    <h1>Cart Page</h1>
+  <div class="cart-container">
+    <h1>Shopping Cart</h1>
     <div v-if="cartItems.length === 0" class="empty-cart-message">Your cart is empty.</div>
-    <div v-else class="cart-items">
-      <div v-for="item in cartItems" :key="item.id" class="cart-item">
-        <img :src="item.image" :alt="item.title" />
-        <div>
-          <h2>{{ item.title }}</h2>
-          <p>{{ '$' + item.price }}</p>
-          <div class="quantity-controls">
-            <button @click="decreaseQuantity(item)">-</button>
-            <span>{{ item.quantity }}</span>
-            <button @click="increaseQuantity(item)">+</button>
+    <div v-else class="cart-content">
+      <div class="cart-items">
+        <div v-for="item in cartItems" :key="item.id" class="cart-item">
+          <img :src="item.image" :alt="item.title" />
+          <div class="item-details">
+            <h2>{{ item.title }}</h2>
+            <p>{{ '$' + item.price }}</p>
+            <div class="quantity-controls">
+              <button @click="decreaseQuantity(item)">-</button>
+              <span>{{ item.quantity }}</span>
+              <button @click="increaseQuantity(item)">+</button>
+            </div>
+            <button class="remove-button" @click="removeFromCart(item.id)">Remove</button>
           </div>
-          <button @click="removeFromCart(item.id)">Remove</button>
         </div>
       </div>
+      <div class="order-summary">
+        <h2>Order summary</h2>
+        <div class="summary-detail">
+          <span>Total</span>
+          <span>{{ '$' + cartTotal }}</span>
+        </div>
+        <button class="checkout-button" @click="proceedToCheckout">Proceed to Checkout</button>
+        <button class="back-button" @click="goToProductList">Back to Product List</button>
+      </div>
     </div>
-    <div class="cart-total">
-      <h2>Total: {{ cartTotal }}</h2>
-    </div>
-    <button @click="goToProductList">Back to Product List</button>
   </div>
 </template>
 
@@ -33,7 +40,8 @@ export default {
   },
   computed: {
     cartTotal() {
-      return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+      const total = this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+      return total.toFixed(2);
     }
   },
   methods: {
@@ -54,15 +62,41 @@ export default {
     updateCart() {
       localStorage.setItem('cart', JSON.stringify(this.cartItems));
     },
+    proceedToCheckout() {
+      // Implement checkout logic here
+    },
     goToProductList() {
       this.$router.push('/');
     }
+  },
+  mounted() {
+    this.cartItems.forEach(item => {
+      if (!item.quantity) {
+        item.quantity = 1;
+      }
+    });
   }
 };
 </script>
 
 <style scoped>
+.cart-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.cart-content {
+  display: flex;
+  gap: 2rem;
+}
+
 .cart-items {
+  flex: 2;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -83,21 +117,19 @@ export default {
   border-radius: 0.5rem;
 }
 
-.cart-total {
-  margin-top: 1rem;
-  font-size: 1.25rem;
-}
 
-button {
+.checkout-button, .back-button {
   background: #325cda;
   color: white;
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
+  width: 100%;
+  margin-top: 0.5rem;
 }
 
-button:hover {
+.checkout-button:hover, .back-button:hover {
   background: #2548a8;
 }
 

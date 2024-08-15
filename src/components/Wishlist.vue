@@ -26,15 +26,25 @@
 
 <script>
 export default {
-  
+  data() {
+    return {
+      wishlistItems: JSON.parse(localStorage.getItem("wishlist")) || [],
+    };
+  },
   methods: {
- ToProductList() {
-    
+    removeFromWishlist(itemId) {
+      this.wishlistItems = this.wishlistItems.filter((item) => item.id !== itemId);
+      this.updateWishlist();
+    },
+    updateWishlist() {
+      localStorage.setItem("wishlist", JSON.stringify(this.wishlistItems));
+    },
+    goToProductList() {
+      this.$router.push("/");
+    },
+  },
 };
 </script>
 
 <style scoped>
-button{
-  background-color: #4c61af;
-}
 </style>

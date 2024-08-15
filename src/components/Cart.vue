@@ -1,9 +1,11 @@
 <template>
   <div class="cart-container">
     <h1>Shopping Cart</h1>
-    <div v-if="cartItems.length === 0" class="empty-cart-message">Your cart is empty.</div>
-    <div v-else class="cart-content">
-      <div class="cart-items">
+    <div v-if="cartItems.length === 0" class="empty-cart-message">
+      Your cart is empty.
+    </div>
+    <div class="cart-content">
+      <div v-if="cartItems.length > 0" class="cart-items">
         <div v-for="item in cartItems" :key="item.id" class="cart-item">
           <img :src="item.image" :alt="item.title" />
           <div class="item-details">
@@ -19,13 +21,24 @@
         </div>
       </div>
       <div class="order-summary">
-        <h2>Order summary</h2>
-        <div class="summary-detail">
+        <h2>Order Summary</h2>
+        <div class="summary-detail" v-if="cartItems.length > 0">
           <span>Total</span>
           <span>{{ '$' + cartTotal }}</span>
         </div>
-        <button class="checkout-button" @click="proceedToCheckout">Proceed to Checkout</button>
-        <button class="back-button" @click="goToProductList">Back to Product List</button>
+        <button
+          class="checkout-button"
+          v-if="cartItems.length > 0"
+          @click="proceedToCheckout"
+        >
+          Proceed to Checkout
+        </button>
+        <button class="clear-cart-button" v-if="cartItems.length > 0" @click="clearCart">
+          Clear Cart
+        </button>
+        <button class="back-button" @click="goToProductList">
+          Back to Product List
+        </button>
       </div>
     </div>
   </div>
@@ -35,14 +48,17 @@
 export default {
   data() {
     return {
-      cartItems: JSON.parse(localStorage.getItem('cart')) || [],
+      cartItems: JSON.parse(localStorage.getItem("cart")) || [],
     };
   },
   computed: {
     cartTotal() {
-      const total = this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+      const total = this.cartItems.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
       return total.toFixed(2);
-    }
+    },
   },
   methods: {
     increaseQuantity(item) {
@@ -56,25 +72,30 @@ export default {
       }
     },
     removeFromCart(itemId) {
-      this.cartItems = this.cartItems.filter(item => item.id !== itemId);
+      this.cartItems = this.cartItems.filter((item) => item.id !== itemId);
+      this.updateCart();
+    },
+    clearCart() {
+      this.cartItems = [];
       this.updateCart();
     },
     updateCart() {
-      localStorage.setItem('cart', JSON.stringify(this.cartItems));
+      localStorage.setItem("cart", JSON.stringify(this.cartItems));
     },
     proceedToCheckout() {
+      // Implement your checkout logic here
     },
     goToProductList() {
-      this.$router.push('/');
-    }
+      this.$router.push("/");
+    },
   },
   mounted() {
-    this.cartItems.forEach(item => {
+    this.cartItems.forEach((item) => {
       if (!item.quantity) {
         item.quantity = 1;
       }
     });
-  }
+  },
 };
 </script>
 
@@ -159,7 +180,9 @@ export default {
   font-size: 1.25rem;
 }
 
-.checkout-button, .back-button {
+.checkout-button,
+.clear-cart-button,
+.back-button {
   background: #325cda;
   color: white;
   padding: 0.5rem 1rem;
@@ -170,7 +193,9 @@ export default {
   margin-top: 0.5rem;
 }
 
-.checkout-button:hover, .back-button:hover {
+.checkout-button:hover,
+.clear-cart-button:hover,
+.back-button:hover {
   background: #2548a8;
 }
 

@@ -38,7 +38,7 @@ export default {
       username: '',
       password: '',
       passwordVisible: false, 
-      isLoggedIn: !!localStorage.getItem('token'),  // Check if the user is logged in
+      isLoggedIn: !!localStorage.getItem('token'),
     };
   },
   computed: {

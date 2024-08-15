@@ -1,17 +1,35 @@
 <template>
-  <div>
-    <h1>Wishlist page</h1>
-    <button @click="goToProductList">Back to Product List</button>
+  <div class="wishlist-container">
+    <h1>Wishlist</h1>
+    <div v-if="wishlistItems.length === 0" class="empty-wishlist-message">
+      Your wishlist is empty.
+    </div>
+    <div class="wishlist-content">
+      <div v-if="wishlistItems.length > 0" class="wishlist-items">
+        <div v-for="item in wishlistItems" :key="item.id" class="wishlist-item">
+          <img :src="item.image" :alt="item.title" />
+          <div class="item-details">
+            <h2>{{ item.title }}</h2>
+            <p>{{ '$' + item.price }}</p>
+            <button class="remove-button" @click="removeFromWishlist(item.id)">
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+      <button class="back-button" @click="goToProductList">
+        Back to Product List
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
+  
   methods: {
-    goToProductList() {
-      this.$router.push('/');
-    }
-  }
+ ToProductList() {
+    
 };
 </script>
 

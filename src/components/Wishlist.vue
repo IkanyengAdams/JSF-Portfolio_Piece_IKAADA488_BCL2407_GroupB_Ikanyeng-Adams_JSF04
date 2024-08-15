@@ -21,6 +21,7 @@
             </div>
           </div>
         </div>
+        <button class="clear-all-button" @click="clearWishlist">Clear All</button>
       </div>
       <button class="back-button" @click="goToProductList">
         Back to Product List
@@ -39,6 +40,10 @@ export default {
   methods: {
     removeFromWishlist(itemId) {
       this.wishlistItems = this.wishlistItems.filter((item) => item.id !== itemId);
+      this.updateWishlist();
+    },
+    clearWishlist() {
+      this.wishlistItems = [];
       this.updateWishlist();
     },
     updateWishlist() {

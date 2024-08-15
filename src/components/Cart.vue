@@ -63,7 +63,6 @@ export default {
       localStorage.setItem('cart', JSON.stringify(this.cartItems));
     },
     proceedToCheckout() {
-      // Implement checkout logic here
     },
     goToProductList() {
       this.$router.push('/');
@@ -117,6 +116,48 @@ export default {
   border-radius: 0.5rem;
 }
 
+.item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.remove-button {
+  background: #ff0000;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.remove-button:hover {
+  background: #cc0000;
+}
+
+.order-summary {
+  flex: 1;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+}
+
+.summary-detail {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.summary-total {
+  font-weight: bold;
+  font-size: 1.25rem;
+}
 
 .checkout-button, .back-button {
   background: #325cda;

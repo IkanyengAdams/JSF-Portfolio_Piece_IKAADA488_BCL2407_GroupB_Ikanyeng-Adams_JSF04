@@ -1,6 +1,6 @@
 <template>
   <div class="wishlist-container">
-    <h1>Wishlist</h1>
+    <h1>Shopping Wishlist</h1>
     <div v-if="wishlistItems.length === 0" class="empty-wishlist-message">
       Your wishlist is empty.
     </div>
@@ -11,9 +11,14 @@
           <div class="item-details">
             <h2>{{ item.title }}</h2>
             <p>{{ '$' + item.price }}</p>
-            <button class="remove-button" @click="removeFromWishlist(item.id)">
-              Remove
-            </button>
+            <div class="item-buttons">
+              <button class="remove-button" @click="removeFromWishlist(item.id)">
+                Remove
+              </button>
+              <button class="view-button" @click="viewProduct(item.id)">
+                View Product
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -39,6 +44,9 @@ export default {
     updateWishlist() {
       localStorage.setItem("wishlist", JSON.stringify(this.wishlistItems));
     },
+    viewProduct(productId) {
+      this.$router.push(`/product/${productId}`);
+    },
     goToProductList() {
       this.$router.push("/");
     },
@@ -47,4 +55,102 @@ export default {
 </script>
 
 <style scoped>
+.wishlist-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  margin: auto;
+}
+
+.wishlist-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.wishlist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.wishlist-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.wishlist-item img {
+  width: 100px;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.item-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.remove-button {
+  background: #ff0000;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.remove-button:hover {
+  background: #cc0000;
+}
+
+.view-button {
+  background: #3b82f6;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.view-button:hover {
+  background: #2563eb;
+}
+
+.back-button {
+  background: #325cda;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.back-button:hover {
+  background: #2548a8;
+}
+
+.empty-wishlist-message {
+  font-size: 1.25rem;
+  color: #ff0000;
+  margin-bottom: 1rem;
+}
 </style>

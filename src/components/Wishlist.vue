@@ -18,8 +18,8 @@
               <button class="view-button" @click="viewProduct(item.id)">
                 View Product
               </button>
-              <button class="add-to-cart-button" @click="addToCart(item)">
-                Add to Cart
+              <button class="add-to-cart-button" @click="toggleCart(item)">
+                {{ isInCart(item.id) ? 'Remove from Cart' : 'Add to Cart' }}
               </button>
             </div>
           </div>
@@ -56,9 +56,16 @@ export default {
     viewProduct(productId) {
       this.$router.push(`/product/${productId}`);
     },
-    addToCart(item) {
-      this.cartItems.push(item);
+    toggleCart(item) {
+      if (this.isInCart(item.id)) {
+        this.cartItems = this.cartItems.filter((cartItem) => cartItem.id !== item.id);
+      } else {
+        this.cartItems.push(item);
+      }
       this.updateCart();
+    },
+    isInCart(itemId) {
+      return this.cartItems.some((item) => item.id === itemId);
     },
     updateCart() {
       localStorage.setItem("cart", JSON.stringify(this.cartItems));

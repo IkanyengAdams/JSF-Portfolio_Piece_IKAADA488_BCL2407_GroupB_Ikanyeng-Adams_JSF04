@@ -18,6 +18,9 @@
               <button class="view-button" @click="viewProduct(item.id)">
                 View Product
               </button>
+              <button class="add-to-cart-button" @click="addToCart(item)">
+                Add to Cart
+              </button>
             </div>
           </div>
         </div>
@@ -35,6 +38,7 @@ export default {
   data() {
     return {
       wishlistItems: JSON.parse(localStorage.getItem("wishlist")) || [],
+      cartItems: JSON.parse(localStorage.getItem("cart")) || [],
     };
   },
   methods: {
@@ -51,6 +55,13 @@ export default {
     },
     viewProduct(productId) {
       this.$router.push(`/product/${productId}`);
+    },
+    addToCart(item) {
+      this.cartItems.push(item);
+      this.updateCart();
+    },
+    updateCart() {
+      localStorage.setItem("cart", JSON.stringify(this.cartItems));
     },
     goToProductList() {
       this.$router.push("/");
@@ -136,6 +147,34 @@ export default {
 
 .view-button:hover {
   background: #2563eb;
+}
+
+.add-to-cart-button {
+  background: #10b981;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.add-to-cart-button:hover {
+  background: #059669;
+}
+
+.clear-all-button {
+  background: #ff0000;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.clear-all-button:hover {
+  background: #cc0000;
 }
 
 .back-button {

@@ -1,6 +1,7 @@
 <template>
   <div class="login-container">
     <h1>{{ isLoggedIn ? 'Logged in' : 'Login Page' }}</h1>
+    <p v-if="isLoggedIn" class="login-status">You are currently logged in</p>
     <form v-if="!isLoggedIn" @submit.prevent="login">
       <div class="form-group">
         <label for="username">Username:</label>
@@ -24,7 +25,9 @@
       </div>
       <button type="submit" class="login-button">Login</button>
     </form>
-    <button v-if="isLoggedIn" @click="logout" class="logout-button">Logout</button>
+    <div v-if="isLoggedIn" class="logout-container">
+      <button @click="logout" class="logout-button">Logout</button>
+    </div>
     <button @click="goToProductList" class="back-button">Back to Product List</button>
   </div>
 </template>
@@ -79,7 +82,6 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .login-container {
   display: flex;
@@ -95,6 +97,11 @@ h1 {
   margin-bottom: 20px;
   font-size: 2em;
   color: #333;
+}
+
+.login-status {
+  color: green;
+  margin-bottom: 10px;
 }
 
 form {
@@ -159,5 +166,22 @@ input {
 
 .back-button:hover {
   background: #888;
+}
+
+.logout-container {
+  margin-top: 20px;
+}
+
+.logout-button {
+  background: #ff0000;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background: #cc0000;
 }
 </style>

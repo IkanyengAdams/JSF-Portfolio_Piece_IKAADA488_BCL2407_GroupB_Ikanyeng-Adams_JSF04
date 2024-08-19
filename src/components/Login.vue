@@ -177,8 +177,32 @@ input {
   background: #274bb5;
 }
 
+.spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #325cda;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .back-button {
   background: #aaa;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
 }
 
 .back-button:hover {
@@ -200,5 +224,11 @@ input {
 
 .logout-button:hover {
   background: #cc0000;
+}
+
+.message {
+  margin-top: 20px;
+  color: #325cda;
+  font-weight: bold;
 }
 </style>

@@ -167,16 +167,6 @@ export default {
     };
 
     /**
-     * Checks if the user is logged in.
-     * @function isLoggedIn
-     * @returns {boolean} - Returns true if the user is logged in, otherwise false.
-     */
-    const isLoggedIn = () => {
-      // Replace with your actual authentication check logic
-      return !!localStorage.getItem('authToken'); // Example: Check if authToken exists in localStorage
-    };
-
-    /**
      * Toggles the wishlist status of a product.
      * @function toggleWishlist
      * @param {Object} product - The product to toggle.
@@ -188,19 +178,11 @@ export default {
     };
 
     /**
-     * Toggles the cart status of a product. If the user is not logged in, it shows a message and redirects to the login page.
+     * Toggles the cart status of a product.
      * @function toggleCart
      * @param {Object} product - The product to toggle.
      */
     const toggleCart = (product) => {
-      if (!isLoggedIn()) {
-        showMessage('You must be logged in to add to cart');
-        setTimeout(() => {
-          router.push('/login');
-        }, 3000);
-        return;
-      }
-
       product.inCart = !product.inCart;
       updateLocalStorage('cart', product);
       showMessage(product.inCart ? 'Added to cart' : 'Removed from cart');
@@ -250,7 +232,7 @@ export default {
       message.value = msg;
       setTimeout(() => {
         message.value = '';
-      }, 2000);
+      }, 1000);
     };
 
     // Lifecycle hook to fetch products and categories on component mount.
@@ -278,7 +260,12 @@ export default {
     };
   },
 };
+
 </script>
+
+<style scoped>
+/* Your existing CSS */
+</style>
 
 
 <style scoped>

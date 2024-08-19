@@ -35,6 +35,7 @@
                   </svg>
                 </div>
                 <span class="review-count">{{ item.rating.count }} reviews</span>
+                <button @click="removeFromComparison(item.id)" class="remove-button">Remove</button>
               </div>
             </td>
           </tr>
@@ -63,6 +64,10 @@ export default {
     clearComparisonList() {
       localStorage.removeItem('comparison');
       this.comparisonItems = [];
+    },
+    removeFromComparison(itemId) {
+      this.comparisonItems = this.comparisonItems.filter(item => item.id !== itemId);
+      localStorage.setItem('comparison', JSON.stringify(this.comparisonItems));
     }
   }
 };
@@ -129,6 +134,20 @@ export default {
 .review-count {
   font-size: 0.8rem;
   color: #555;
+}
+
+.remove-button {
+  background: #ff0000;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.remove-button:hover {
+  background: #cc0000;
 }
 
 .button-container {

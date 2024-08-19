@@ -66,9 +66,6 @@ export default {
         this.isLoggedIn = true;
         this.loading = false;
         this.showMessage('Logged in successfully');
-        setTimeout(() => {
-          this.$router.push('/');
-        }, 2000);
       } catch (error) {
         console.error('Login failed:', error);
         this.loading = false;
@@ -79,9 +76,6 @@ export default {
       localStorage.removeItem('token');
       this.isLoggedIn = false;
       this.showMessage('Logged out successfully');
-      setTimeout(() => {
-        this.$router.push('/');
-      }, 2000);
     },
     goToProductList() {
       this.$router.push('/');

@@ -5,6 +5,7 @@ import Wishlist from './components/Wishlist.vue';
 import Cart from './components/Cart.vue';
 import Login from './components/Login.vue';
 import Comparison from './components/Comparison.vue';
+import Checkout from './components/Checkout.vue'
 
 const routes = [
   { path: '/', component: Productlist },
@@ -46,6 +47,7 @@ const routes = [
     },
   },
   { path: '/login', component: Login },
+  { path: '/checkout', component: Checkout }
 ];
 
 const router = createRouter({

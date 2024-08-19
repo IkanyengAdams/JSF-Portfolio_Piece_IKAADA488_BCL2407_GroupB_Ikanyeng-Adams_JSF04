@@ -83,7 +83,7 @@ export default {
       localStorage.setItem("cart", JSON.stringify(this.cartItems));
     },
     proceedToCheckout() {
-
+      this.$router.push('/checkout');
     },
     goToProductList() {
       this.$router.push("/");

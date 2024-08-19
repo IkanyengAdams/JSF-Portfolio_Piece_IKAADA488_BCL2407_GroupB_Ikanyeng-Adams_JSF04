@@ -54,6 +54,38 @@ export default {
 <style scoped>
 button {
   background-color: #4c61af;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
 
+button:hover {
+  background-color: #3b4e90;
+}
+
+.comparison-table {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  background-color: white;
+}
+
+.comparison-image {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: cover;
 }
 </style>

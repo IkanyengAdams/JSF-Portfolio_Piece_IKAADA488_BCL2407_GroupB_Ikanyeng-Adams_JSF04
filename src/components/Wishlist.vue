@@ -42,8 +42,19 @@ export default {
     };
   },
   methods: {
-    removeFromWishlist(itemId) {
-      this.wishlistItems = this.wishlistItems.filter((item) => item.id !== itemId);
+    async fetchProductData(productId) {
+      try {
+        const response = await fetch(`https://fakestoreapi.com/products/${productId}`);
+        const productData = await response.json();
+        return productData;
+      } catch (error) {
+        console.error('Error fetching product data:', error);
+        return null;
+      }
+    },
+    async removeFromWishlist(itemId) {
+      const updatedWishlist = this.wishlistItems.filter(item => item.id !== itemId);
+      this.wishlistItems = updatedWishlist;
       this.updateWishlist();
     },
     clearWishlist() {
@@ -53,27 +64,33 @@ export default {
     updateWishlist() {
       localStorage.setItem("wishlist", JSON.stringify(this.wishlistItems));
     },
-    viewProduct(productId) {
-      this.$router.push(`/product/${productId}`);
-    },
-    toggleCart(item) {
-      if (this.isInCart(item.id)) {
-        this.cartItems = this.cartItems.filter((cartItem) => cartItem.id !== item.id);
-      } else {
-        this.cartItems.push(item);
-      }
-      this.updateCart();
-    },
-    isInCart(itemId) {
-      return this.cartItems.some((item) => item.id === itemId);
-    },
     updateCart() {
       localStorage.setItem("cart", JSON.stringify(this.cartItems));
     },
+    async viewProduct(productId) {
+      const productData = await this.fetchProductData(productId);
+      if (productData) {
+        this.$router.push({ name: 'ProductDetail', params: { id: productId } });
+      }
+    },
+    async toggleCart(item) {
+      const productData = await this.fetchProductData(item.id);
+      if (productData) {
+        if (this.isInCart(item.id)) {
+          this.cartItems = this.cartItems.filter(cartItem => cartItem.id !== item.id);
+        } else {
+          this.cartItems.push(productData);
+        }
+        this.updateCart();
+      }
+    },
+    isInCart(itemId) {
+      return this.cartItems.some(item => item.id === itemId);
+    },
     goToProductList() {
       this.$router.push("/");
-    },
-  },
+    }
+  }
 };
 </script>
 

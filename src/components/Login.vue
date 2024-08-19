@@ -10,12 +10,7 @@
       <div class="form-group">
         <label for="password">Password:</label>
         <div class="password-wrapper">
-          <input
-            :type="passwordFieldType"
-            v-model="password"
-            id="password"
-            required
-          />
+          <input :type="passwordFieldType" v-model="password" id="password" required />
           <font-awesome-icon
             :icon="passwordVisible ? 'eye' : 'eye-slash'"
             @click="togglePasswordVisibility"
@@ -23,12 +18,16 @@
           />
         </div>
       </div>
-      <button type="submit" class="login-button">Login</button>
+      <button type="submit" class="login-button" :disabled="loading">
+        <div v-if="loading" class="spinner"></div>
+        <span v-else>Login</span>
+      </button>
     </form>
     <div v-if="isLoggedIn" class="logout-container">
       <button @click="logout" class="logout-button">Logout</button>
     </div>
     <button @click="goToProductList" class="back-button">Back to Product List</button>
+    <p v-if="message" class="message">{{ message }}</p>
   </div>
 </template>
 
@@ -40,8 +39,10 @@ export default {
     return {
       username: '',
       password: '',
-      passwordVisible: false, 
+      passwordVisible: false,
       isLoggedIn: !!localStorage.getItem('token'),
+      loading: false,
+      message: '',
     };
   },
   computed: {
@@ -54,31 +55,44 @@ export default {
       this.passwordVisible = !this.passwordVisible;
     },
     async login() {
+      this.loading = true;
       try {
         const response = await axiosAuth.post('auth/login', {
           username: this.username,
           password: this.password,
         });
         const token = response.data.token;
-        localStorage.setItem('token', token); 
+        localStorage.setItem('token', token);
         this.isLoggedIn = true;
-        alert('Login successful!');
-        this.$router.push('/');
+        this.loading = false;
+        this.showMessage('Logged in successfully');
+        setTimeout(() => {
+          this.$router.push('/');
+        }, 2000);
       } catch (error) {
         console.error('Login failed:', error);
-        alert('Login failed. Please check your credentials.');
+        this.loading = false;
+        this.showMessage('Login failed. Please check your credentials.');
       }
     },
     logout() {
       localStorage.removeItem('token');
       this.isLoggedIn = false;
-      alert('Logged out successfully!');
-      this.$router.push('/');
+      this.showMessage('Logged out successfully');
+      setTimeout(() => {
+        this.$router.push('/');
+      }, 2000);
     },
     goToProductList() {
       this.$router.push('/');
-    }
-  }
+    },
+    showMessage(msg) {
+      this.message = msg;
+      setTimeout(() => {
+        this.message = '';
+      }, 2000);
+    },
+  },
 };
 </script>
 
@@ -110,7 +124,7 @@ form {
   width: 100%;
   max-width: 400px;
   background: white;
-  padding: 20px 30px; 
+  padding: 20px 30px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -146,7 +160,7 @@ input {
   color: #325cda;
 }
 
-.login-button, .back-button {
+.login-button {
   background: #325cda;
   color: white;
   border: none;
@@ -154,9 +168,12 @@ input {
   border-radius: 5px;
   cursor: pointer;
   margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.login-button:hover, .back-button:hover {
+.login-button:hover {
   background: #274bb5;
 }
 

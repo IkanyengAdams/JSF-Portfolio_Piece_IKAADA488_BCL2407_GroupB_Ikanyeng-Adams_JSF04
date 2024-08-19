@@ -1,13 +1,13 @@
 <template>
   <div>
     <h1>Comparison Page</h1>
-    <button @click="goToProductList" class="action-button">Back to Product List</button>
-    <button @click="clearComparisonList" class="action-button">Clear Comparison List</button>
     <div v-if="comparisonItems.length > 0">
       <table class="comparison-table">
         <thead>
           <tr>
-            <th v-for="item in comparisonItems" :key="item.id">{{ item.title }}</th>
+            <th v-for="item in comparisonItems" :key="item.id">
+              <div class="product-title">{{ item.title }}</div>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -17,27 +17,33 @@
             </td>
           </tr>
           <tr>
-            <td v-for="item in comparisonItems" :key="item.id">{{ item.description }}</td>
+            <td v-for="item in comparisonItems" :key="item.id">
+              <div class="product-description">{{ item.description }}</div>
+            </td>
           </tr>
           <tr>
-            <td v-for="item in comparisonItems" :key="item.id">{{ '$' + item.price }}</td>
+            <td v-for="item in comparisonItems" :key="item.id">
+              <div class="product-price">{{ '$' + item.price }}</div>
+            </td>
           </tr>
           <tr>
             <td v-for="item in comparisonItems" :key="item.id">
               <div class="rating">
-                <svg v-for="i in 5" :key="i" :class="i <= Math.round(item.rating.rate) ? 'filled' : 'empty'" viewBox="0 0 24 24">
-                  <path d="M12 .587l3.668 7.571 8.332 1.151-6.063 5.852 1.428 8.287L12 18.897l-7.365 3.851 1.428-8.287-6.063-5.852 8.332-1.151z"/>
-                </svg>
+                <div class="stars">
+                  <svg v-for="i in 5" :key="i" :class="i <= Math.round(item.rating.rate) ? 'filled' : 'empty'" viewBox="0 0 24 24">
+                    <path d="M12 .587l3.668 7.571 8.332 1.151-6.063 5.852 1.428 8.287L12 18.897l-7.365 3.851 1.428-8.287-6.063-5.852 8.332-1.151z"/>
+                  </svg>
+                </div>
+                <span class="review-count">{{ item.rating.count }} reviews</span>
               </div>
-            </td>
-          </tr>
-          <tr>
-            <td v-for="item in comparisonItems" :key="item.id">
-              <button @click="removeFromComparison(item)" class="remove-button">Remove</button>
             </td>
           </tr>
         </tbody>
       </table>
+      <div class="button-container">
+        <button @click="clearComparisonList" class="action-button">Clear Comparison List</button>
+        <button @click="goToProductList" class="action-button">Back to Product List</button>
+      </div>
     </div>
     <div v-else class="no-items-message">No items to compare</div>
   </div>
@@ -53,8 +59,10 @@ export default {
   methods: {
     goToProductList() {
       this.$router.push('/');
-    
-      localStorage.setItem('comparison', JSON.stringify(this.comparisonItems));
+    },
+    clearComparisonList() {
+      localStorage.removeItem('comparison');
+      this.comparisonItems = [];
     }
   }
 };
@@ -79,8 +87,75 @@ export default {
   background-color: #f4f4f4;
 }
 
+.product-title {
+  font-weight: bold;
+}
+
+.product-description, .product-price {
+  text-align: center;
+}
+
 .product-image {
   max-width: 100px;
- 
+  height: auto;
+}
+
+.rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stars {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.rating svg {
+  width: 1.6rem;
+  height: 1.6rem;
+  margin: 0 0.1rem;
+}
+
+.rating svg.filled {
+  fill: #fbc02d;
+}
+
+.rating svg.empty {
+  fill: #e0e0e0;
+}
+
+.review-count {
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.action-button {
+  background-color: #4c61af;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  margin: 0.5rem;
+}
+
+.action-button:hover {
+  background-color: #2b4a9b;
+}
+
+.no-items-message {
+  color: blue;
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 1.25rem;
 }
 </style>

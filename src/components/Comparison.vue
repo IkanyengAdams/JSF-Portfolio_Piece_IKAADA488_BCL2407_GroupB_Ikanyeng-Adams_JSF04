@@ -36,6 +36,17 @@ export default {
     goToProductList() {
       this.$router.push('/');
     }
+  },
+  watch: {
+    comparisonItems: {
+      handler(newItems) {
+        if (newItems.length > 4) {
+          this.comparisonItems = newItems.slice(0, 4);
+          localStorage.setItem('comparison', JSON.stringify(this.comparisonItems));
+        }
+      },
+      immediate: true
+    }
   }
 };
 </script>
@@ -43,5 +54,6 @@ export default {
 <style scoped>
 button {
   background-color: #4c61af;
+
 }
 </style>

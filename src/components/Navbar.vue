@@ -48,6 +48,7 @@
         </span>
       </div>
     </div>
+    <div v-if="notification" class="notification">{{ notification }}</div>
   </header>
 </template>
 
@@ -57,7 +58,8 @@ export default {
     return {
       openSidebar: false,
       isMobile: window.innerWidth <= 768,
-      isLoggedIn: !!localStorage.getItem('token'),  // Check if the user is logged in
+      isLoggedIn: !!localStorage.getItem('token'),
+      notification: null,
     };
   },
   methods: {
@@ -84,6 +86,10 @@ export default {
      * @function goToWishlist
      */
     goToWishlist() {
+      if (!this.isLoggedIn) {
+        this.showNotification('You need to login first');
+        return;
+      }
       this.$router.push('/wishlist');
     },
 
@@ -92,6 +98,10 @@ export default {
      * @function goToComparison
      */
     goToComparison() {
+      if (!this.isLoggedIn) {
+        this.showNotification('You need to login first');
+        return;
+      }
       this.$router.push('/comparison');
     },
 
@@ -100,6 +110,10 @@ export default {
      * @function goToCart
      */
     goToCart() {
+      if (!this.isLoggedIn) {
+        this.showNotification('You need to login first');
+        return;
+      }
       this.$router.push('/cart');
     },
 
@@ -108,11 +122,20 @@ export default {
      * @function handleLoginClick
      */
     handleLoginClick() {
-      if (this.isLoggedIn) {
-        this.$router.push('/login');  // Redirect to login page where they can log out
-      } else {
-        this.$router.push('/login');  // Redirect to login page
-      }
+      this.$router.push('/login');
+    },
+
+    /**
+     * Shows a temporary notification message and navigates to the login page.
+     * @function showNotification
+     * @param {string} message - The message to be displayed
+     */
+    showNotification(message) {
+      this.notification = message;
+      setTimeout(() => {
+        this.notification = null;
+        this.$router.push('/login');
+      }, 2000); 
     },
 
     /**
@@ -290,5 +313,17 @@ export default {
 
 .logout-button:hover {
   background-color: darkred;
+}
+
+.notification {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: hsl(0, 95%, 61%);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  z-index: 2000;
 }
 </style>

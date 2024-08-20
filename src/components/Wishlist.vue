@@ -186,7 +186,6 @@ select:focus {
   flex-direction: column;
   gap: 1rem;
   max-height: 500px;
-  overflow-y: auto;
 }
 
 .wishlist-item {

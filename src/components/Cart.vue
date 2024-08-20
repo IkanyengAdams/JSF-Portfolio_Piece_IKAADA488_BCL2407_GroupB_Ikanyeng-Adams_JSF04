@@ -45,13 +45,10 @@
 </template>
 
 <script>
-import jwtDecode from 'jwt-decode';
-
 export default {
   data() {
     return {
-      cartItems: [],
-      userId: null,
+      cartItems: JSON.parse(localStorage.getItem("cart")) || [],
     };
   },
   computed: {
@@ -64,18 +61,6 @@ export default {
     },
   },
   methods: {
-    loadCart() {
-      const token = localStorage.getItem('authToken');
-      if (token) {
-        const decodedToken = jwtDecode(token);
-        this.userId = decodedToken.userId;
-        const storedCart = JSON.parse(localStorage.getItem(`cart_${this.userId}`)) || [];
-        this.cartItems = storedCart.map(item => ({
-          ...item,
-          quantity: item.quantity || 1,
-        }));
-      }
-    },
     increaseQuantity(item) {
       item.quantity++;
       this.updateCart();
@@ -87,7 +72,7 @@ export default {
       }
     },
     removeFromCart(itemId) {
-      this.cartItems = this.cartItems.filter(item => item.id !== itemId);
+      this.cartItems = this.cartItems.filter((item) => item.id !== itemId);
       this.updateCart();
     },
     clearCart() {
@@ -95,7 +80,7 @@ export default {
       this.updateCart();
     },
     updateCart() {
-      localStorage.setItem(`cart_${this.userId}`, JSON.stringify(this.cartItems));
+      localStorage.setItem("cart", JSON.stringify(this.cartItems));
     },
     proceedToCheckout() {
       this.$router.push('/checkout');
@@ -105,7 +90,11 @@ export default {
     },
   },
   mounted() {
-    this.loadCart();
+    this.cartItems.forEach((item) => {
+      if (!item.quantity) {
+        item.quantity = 1;
+      }
+    });
   },
 };
 </script>

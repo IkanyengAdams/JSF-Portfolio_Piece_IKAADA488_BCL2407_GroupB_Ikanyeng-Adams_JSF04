@@ -1,5 +1,3 @@
-
-Copy code
 <template>
   <header>
     <nav class="navbar">
@@ -171,7 +169,7 @@ export default {
   },
   watch: {
     '$route'() {
-      this.isLoggedIn = !!localStorage.getItem('token');  // Update login status on route change
+      this.isLoggedIn = !!localStorage.getItem('token'); 
     }
   }
 };

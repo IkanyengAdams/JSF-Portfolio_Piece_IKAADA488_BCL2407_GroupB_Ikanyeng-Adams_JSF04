@@ -132,10 +132,8 @@ export default {
       return this.cartItems.some(item => item.id === itemId);
     },
     filterWishlist() {
-    
     },
     sortWishlist() {
-    
     },
     goToProductList() {
       this.$router.push("/");
@@ -155,6 +153,28 @@ export default {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-width: 1200px;
   margin: auto;
+}
+
+.sort-filter-container {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.filter-category, .sort-price {
+  display: flex;
+  flex-direction: column;
+}
+
+select {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #ddd;
+}
+
+select:focus {
+  outline: none;
+  border-color: #3b82f6;
 }
 
 .wishlist-content {

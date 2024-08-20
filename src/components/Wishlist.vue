@@ -4,9 +4,30 @@
     <div v-if="wishlistItems.length === 0" class="empty-wishlist-message">
       Your wishlist is empty.
     </div>
+
+    <div class="sort-filter-container" v-if="wishlistItems.length > 0">
+      <div class="filter-category">
+        <label for="category">Filter by Category:</label>
+        <select v-model="selectedCategory" @change="filterWishlist">
+          <option value="">All Categories</option>
+          <option v-for="category in categories" :key="category" :value="category">
+            {{ category }}
+          </option>
+        </select>
+      </div>
+
+      <div class="sort-price">
+        <label for="sort">Sort by Price:</label>
+        <select v-model="selectedSort" @change="sortWishlist">
+          <option value="asc">Lowest to Highest</option>
+          <option value="desc">Highest to Lowest</option>
+        </select>
+      </div>
+    </div>
+
     <div class="wishlist-content">
       <div v-if="wishlistItems.length > 0" class="wishlist-items">
-        <div v-for="item in wishlistItems" :key="item.id" class="wishlist-item">
+        <div v-for="item in filteredWishlistItems" :key="item.id" class="wishlist-item">
           <img :src="item.image" :alt="item.title" />
           <div class="item-details">
             <h2>{{ item.title }}</h2>
@@ -39,20 +60,43 @@ export default {
     return {
       wishlistItems: JSON.parse(localStorage.getItem("wishlist")) || [],
       cartItems: JSON.parse(localStorage.getItem("cart")) || [],
+      categories: [],
+      selectedCategory: '',
+      selectedSort: 'asc',
     };
   },
+  computed: {
+    filteredWishlistItems() {
+      let filteredItems = this.wishlistItems;
+
+      if (this.selectedCategory) {
+        filteredItems = filteredItems.filter(
+          (item) => item.category === this.selectedCategory
+        );
+      }
+
+      if (this.selectedSort === 'asc') {
+        filteredItems.sort((a, b) => a.price - b.price);
+      } else if (this.selectedSort === 'desc') {
+        filteredItems.sort((a, b) => b.price - a.price);
+      }
+
+      return filteredItems;
+    }
+  },
+  created() {
+    this.fetchCategories();
+  },
   methods: {
-    async fetchProductData(productId) {
+    async fetchCategories() {
       try {
-        const response = await fetch(`https://fakestoreapi.com/products/${productId}`);
-        const productData = await response.json();
-        return productData;
+        const response = await fetch("https://fakestoreapi.com/products/categories");
+        this.categories = await response.json();
       } catch (error) {
-        console.error('Error fetching product data:', error);
-        return null;
+        console.error('Error fetching categories:', error);
       }
     },
-    async removeFromWishlist(itemId) {
+    removeFromWishlist(itemId) {
       const updatedWishlist = this.wishlistItems.filter(item => item.id !== itemId);
       this.wishlistItems = updatedWishlist;
       this.updateWishlist();
@@ -86,6 +130,12 @@ export default {
     },
     isInCart(itemId) {
       return this.cartItems.some(item => item.id === itemId);
+    },
+    filterWishlist() {
+    
+    },
+    sortWishlist() {
+    
     },
     goToProductList() {
       this.$router.push("/");

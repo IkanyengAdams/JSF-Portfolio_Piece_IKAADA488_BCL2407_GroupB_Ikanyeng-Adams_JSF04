@@ -26,7 +26,11 @@
     </div>
 
     <div class="wishlist-content">
-      <div v-if="wishlistItems.length > 0" class="wishlist-items">
+      <div v-if="filteredWishlistItems.length === 0" class="no-products-message">
+        No products found.
+      </div>
+
+      <div v-else class="wishlist-items">
         <div v-for="item in filteredWishlistItems" :key="item.id" class="wishlist-item">
           <img :src="item.image" :alt="item.title" />
           <div class="item-details">
@@ -112,21 +116,15 @@ export default {
       localStorage.setItem("cart", JSON.stringify(this.cartItems));
     },
     async viewProduct(productId) {
-      const productData = await this.fetchProductData(productId);
-      if (productData) {
-        this.$router.push({ name: 'ProductDetail', params: { id: productId } });
-      }
+      this.$router.push({ name: 'ProductDetail', params: { id: productId } });
     },
-    async toggleCart(item) {
-      const productData = await this.fetchProductData(item.id);
-      if (productData) {
-        if (this.isInCart(item.id)) {
-          this.cartItems = this.cartItems.filter(cartItem => cartItem.id !== item.id);
-        } else {
-          this.cartItems.push(productData);
-        }
-        this.updateCart();
+    toggleCart(item) {
+      if (this.isInCart(item.id)) {
+        this.cartItems = this.cartItems.filter(cartItem => cartItem.id !== item.id);
+      } else {
+        this.cartItems.push(item);
       }
+      this.updateCart();
     },
     isInCart(itemId) {
       return this.cartItems.some(item => item.id === itemId);
@@ -290,5 +288,11 @@ select:focus {
   font-size: 1.25rem;
   color: #ff0000;
   margin-bottom: 1rem;
+}
+
+.no-products-message {
+  font-size: 1.25rem;
+  color: #ff0000;
+  margin: 1rem 0;
 }
 </style>

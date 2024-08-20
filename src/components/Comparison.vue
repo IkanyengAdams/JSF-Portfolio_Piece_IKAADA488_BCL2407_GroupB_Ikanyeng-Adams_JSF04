@@ -1,7 +1,12 @@
 <template>
   <div>
     <h1>Comparison Page</h1>
-    <div v-if="comparisonItems.length > 0">
+
+    <div v-if="comparisonItems.length >= 4" class="max-products-notice">
+      You can compare up to 4 products.
+    </div>
+
+    <div v-if="comparisonItems.length > 0 && comparisonItems.length <= 4">
       <table class="comparison-table">
         <thead>
           <tr>
@@ -43,10 +48,14 @@
       </table>
       <div class="button-container">
         <button @click="clearComparisonList" class="action-button">Clear Comparison List</button>
-        <button @click="goToProductList" class="action-button">Back to Product List</button>
       </div>
     </div>
-    <div v-else class="no-items-message">No items to compare</div>
+    <div v-else class="no-items-message">
+      No items to compare
+    </div>
+    <div class="button-container">
+      <button @click="goToProductList" class="action-button">Back to Product List</button>
+    </div>
   </div>
 </template>
 
@@ -176,5 +185,12 @@ export default {
   text-align: center;
   margin-top: 2rem;
   font-size: 1.25rem;
+}
+
+.max-products-notice {
+  color: #ff8c00;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1rem;
 }
 </style>

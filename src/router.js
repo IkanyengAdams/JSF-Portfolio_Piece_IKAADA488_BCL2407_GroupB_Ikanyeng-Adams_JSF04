@@ -5,13 +5,22 @@ import Wishlist from './components/Wishlist.vue';
 import Cart from './components/Cart.vue';
 import Login from './components/Login.vue';
 import Comparison from './components/Comparison.vue';
-import Checkout from './components/Checkout.vue'
+import Checkout from './components/Checkout.vue';
 
 const routes = [
-  { path: '/', component: Productlist },
-  { path: '/product/:id', component: ProductDetail },
+  { 
+    path: '/', 
+    name: 'ProductList', 
+    component: Productlist 
+  },
+  { 
+    path: '/product/:id', 
+    name: 'ProductDetail', 
+    component: ProductDetail 
+  },
   {
     path: '/wishlist',
+    name: 'Wishlist',
     component: Wishlist,
     beforeEnter: (to, from, next) => {
       if (!localStorage.getItem('token')) {
@@ -24,6 +33,7 @@ const routes = [
   },
   {
     path: '/cart',
+    name: 'Cart',
     component: Cart,
     beforeEnter: (to, from, next) => {
       if (!localStorage.getItem('token')) {
@@ -36,6 +46,7 @@ const routes = [
   },
   {
     path: '/comparison',
+    name: 'Comparison',
     component: Comparison,
     beforeEnter: (to, from, next) => {
       if (!localStorage.getItem('token')) {
@@ -46,8 +57,16 @@ const routes = [
       }
     },
   },
-  { path: '/login', component: Login },
-  { path: '/checkout', component: Checkout }
+  { 
+    path: '/login', 
+    name: 'Login', 
+    component: Login 
+  },
+  { 
+    path: '/checkout', 
+    name: 'Checkout', 
+    component: Checkout 
+  }
 ];
 
 const router = createRouter({

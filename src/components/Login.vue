@@ -66,6 +66,10 @@ export default {
         this.isLoggedIn = true;
         this.loading = false;
         this.showMessage('Logged in successfully');
+
+        setTimeout(() => {
+          this.$router.push('/');
+        }, 1500);
       } catch (error) {
         console.error('Login failed:', error);
         this.loading = false;

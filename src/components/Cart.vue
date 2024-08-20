@@ -112,11 +112,12 @@ export default {
 
 .cart-content {
   display: flex;
+  flex-direction: column; 
   gap: 2rem;
 }
 
 .cart-items {
-  flex: 2;
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -124,7 +125,8 @@ export default {
 
 .cart-item {
   display: flex;
-  align-items: center;
+  flex-direction: column; 
+  align-items: flex-start;
   gap: 1rem;
   background: #f9f9f9;
   padding: 1rem;
@@ -132,7 +134,8 @@ export default {
 }
 
 .cart-item img {
-  width: 100px;
+  width: 100%;
+  max-width: 150px; 
   height: auto;
   border-radius: 0.5rem;
 }
@@ -163,7 +166,6 @@ export default {
 }
 
 .order-summary {
-  flex: 1;
   padding: 1rem;
   border: 1px solid #ddd;
   border-radius: 0.5rem;
@@ -203,5 +205,35 @@ export default {
   font-size: 1.25rem;
   color: #ff0000;
   margin-bottom: 1rem;
+}
+
+
+@media (max-width: 768px) {
+  .cart-content {
+    flex-direction: column; 
+  }
+
+  .cart-items {
+    flex: none; 
+  }
+
+  .order-summary {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cart-item {
+    flex-direction: column;
+    text-align: center; 
+  }
+
+  .quantity-controls {
+    flex-direction: column;
+  }
+
+  .cart-item img {
+    max-width: 100%; 
+  }
 }
 </style>

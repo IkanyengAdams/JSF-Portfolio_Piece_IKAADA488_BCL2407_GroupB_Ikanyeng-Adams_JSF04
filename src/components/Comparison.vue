@@ -1,38 +1,34 @@
 <template>
   <div>
     <h1>Comparison Page</h1>
-
-    <div v-if="comparisonItems.length >= 4" class="max-products-notice">
-      You can compare up to 4 products.
-    </div>
-
-    <div v-if="comparisonItems.length > 0 && comparisonItems.length <= 4">
+    <div class="max-products-message">Maximum products: 4</div>
+    <div v-if="comparisonItems.length > 0">
       <table class="comparison-table">
         <thead>
           <tr>
-            <th v-for="item in comparisonItems" :key="item.id">
+            <th v-for="item in limitedComparisonItems" :key="item.id">
               <div class="product-title">{{ item.title }}</div>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td v-for="item in comparisonItems" :key="item.id">
+            <td v-for="item in limitedComparisonItems" :key="item.id">
               <img :src="item.image" :alt="item.title" class="product-image" />
             </td>
           </tr>
           <tr>
-            <td v-for="item in comparisonItems" :key="item.id">
+            <td v-for="item in limitedComparisonItems" :key="item.id">
               <div class="product-description">{{ item.description }}</div>
             </td>
           </tr>
           <tr>
-            <td v-for="item in comparisonItems" :key="item.id">
+            <td v-for="item in limitedComparisonItems" :key="item.id">
               <div class="product-price">{{ '$' + item.price }}</div>
             </td>
           </tr>
           <tr>
-            <td v-for="item in comparisonItems" :key="item.id">
+            <td v-for="item in limitedComparisonItems" :key="item.id">
               <div class="rating">
                 <div class="stars">
                   <svg v-for="i in 5" :key="i" :class="i <= Math.round(item.rating.rate) ? 'filled' : 'empty'" viewBox="0 0 24 24">
@@ -50,9 +46,7 @@
         <button @click="clearComparisonList" class="action-button">Clear Comparison List</button>
       </div>
     </div>
-    <div v-else class="no-items-message">
-      No items to compare
-    </div>
+    <div v-else class="no-items-message">No items to compare</div>
     <div class="button-container">
       <button @click="goToProductList" class="action-button">Back to Product List</button>
     </div>
@@ -65,6 +59,11 @@ export default {
     return {
       comparisonItems: JSON.parse(localStorage.getItem('comparison')) || []
     };
+  },
+  computed: {
+    limitedComparisonItems() {
+      return this.comparisonItems.slice(0, 4);
+    }
   },
   methods: {
     goToProductList() {
@@ -187,10 +186,10 @@ export default {
   font-size: 1.25rem;
 }
 
-.max-products-notice {
-  color: #ff8c00;
+.max-products-message {
   text-align: center;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
   font-size: 1rem;
+  color: #888;
 }
 </style>

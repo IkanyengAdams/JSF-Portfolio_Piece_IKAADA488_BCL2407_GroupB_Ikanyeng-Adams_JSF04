@@ -25,6 +25,8 @@
       <h2>Select Payment Method</h2>
       <div id="paypal-button-container"></div>
     </div>
+
+    <button @click="goToCart" class="back-button">Back to Cart</button>
   </div>
 </template>
 
@@ -53,7 +55,10 @@ export default {
     },
     proceedToPayment() {
       localStorage.setItem('userInfo', JSON.stringify(this.user));
-      this.$router.push('/Checkout');
+      this.$router.push('/checkout');
+    },
+    goToCart() {
+      this.$router.push('/cart');
     }
   }
 };
@@ -111,6 +116,20 @@ input:focus {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.back-button {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  margin-top: 2rem;
+}
+
+.back-button:hover {
+  background-color: #ddd;
 }
 
 @media (max-width: 768px) {

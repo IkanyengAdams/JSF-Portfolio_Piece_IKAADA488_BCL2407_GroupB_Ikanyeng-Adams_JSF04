@@ -169,7 +169,7 @@ export default {
   padding: 1rem;
   border: 1px solid #ddd;
   border-radius: 0.5rem;
-  align-self: flex-start; /* Align summary to the top of the container */
+  align-self: flex-start;
 }
 
 .summary-detail {

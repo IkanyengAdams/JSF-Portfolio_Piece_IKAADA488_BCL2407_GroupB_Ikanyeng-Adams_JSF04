@@ -82,5 +82,8 @@ Flexbox Layouts: For flexible and adaptive layouts.
 Media Queries: To adjust styling based on screen size.
 Responsive Components: Navbar, product cards, and buttons adjust for optimal usability on different devices.
 
+[Deployed project link](https://portfolio-ikaada-488-bcl-2407-group-b-ikanyeng-adams-jsf-04.vercel.app/)
+
+
 
 

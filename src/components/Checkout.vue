@@ -1,7 +1,26 @@
-
 <template>
   <div class="checkout-container">
     <h1>Checkout</h1>
+
+    <div class="user-info">
+      <h2>Your Information</h2>
+      <form @submit.prevent="proceedToPayment">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" v-model="user.name" required />
+        </div>
+        <div class="form-group">
+          <label for="address">Residential Address:</label>
+          <input type="text" id="address" v-model="user.address" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" v-model="user.email" required />
+        </div>
+        <button type="submit" class="proceed-button">Proceed to Payment</button>
+      </form>
+    </div>
+
     <div class="payment-methods">
       <h2>Select Payment Method</h2>
       <div id="paypal-button-container"></div>
@@ -10,7 +29,34 @@
 </template>
 
 <script>
-
+export default {
+  data() {
+    return {
+      user: {
+        name: '',
+        address: '',
+        email: ''
+      }
+    };
+  },
+  created() {
+    this.autoFillUserInfo();
+  },
+  methods: {
+    autoFillUserInfo() {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      if (userInfo) {
+        this.user.name = userInfo.name || '';
+        this.user.address = userInfo.address || '';
+        this.user.email = userInfo.email || '';
+      }
+    },
+    proceedToPayment() {
+      localStorage.setItem('userInfo', JSON.stringify(this.user));
+      this.$router.push('/Checkout');
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -56,4 +102,3 @@
   }
 }
 </style>
-

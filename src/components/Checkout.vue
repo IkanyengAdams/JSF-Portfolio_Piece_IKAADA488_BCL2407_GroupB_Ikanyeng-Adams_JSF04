@@ -29,4 +29,31 @@
   flex-direction: column;
   gap: 1rem;
 }
+
+@media (max-width: 768px) {
+  .checkout-container {
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .payment-methods {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .checkout-container {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .payment-methods {
+    gap: 0.5rem;
+  }
+
+  #paypal-button-container {
+    width: 100%;
+  }
+}
 </style>
+

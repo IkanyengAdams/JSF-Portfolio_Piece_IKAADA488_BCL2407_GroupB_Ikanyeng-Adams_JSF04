@@ -192,4 +192,62 @@ export default {
   font-size: 1rem;
   color: #888;
 }
+
+
+@media (max-width: 768px) {
+  .comparison-table th, .comparison-table td {
+    padding: 0.25rem;
+  }
+
+  .product-image {
+    max-width: 80px;
+  }
+
+  .rating svg {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+
+  .review-count {
+    font-size: 0.7rem;
+  }
+
+  .action-button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.875rem;
+  }
+
+  .button-container {
+    margin-top: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .comparison-table th, .comparison-table td {
+    padding: 0.5rem 0.25rem;
+  }
+
+  .product-image {
+    max-width: 60px;
+  }
+
+  .rating svg {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  .review-count {
+    font-size: 0.6rem;
+  }
+
+  .action-button {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .no-items-message, .max-products-message {
+    font-size: 1rem;
+  }
+}
+
 </style>

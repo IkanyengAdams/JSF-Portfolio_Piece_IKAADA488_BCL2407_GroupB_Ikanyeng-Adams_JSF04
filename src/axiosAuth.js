@@ -1,16 +1,14 @@
-import axios from 'axios';
+import axios from "axios";
 
 const axiosAuth = axios.create({
-  baseURL: 'https://fakestoreapi.com/',
+  baseURL: "https://fakestoreapi.com/",
   headers: {
-    'Content-type': 'application/json',
+    "Content-type": "application/json",
   },
 });
 
-
 export function isLoggedIn() {
-  return !!localStorage.getItem('token');
+  return !!localStorage.getItem("token");
 }
-
 
 export default axiosAuth;

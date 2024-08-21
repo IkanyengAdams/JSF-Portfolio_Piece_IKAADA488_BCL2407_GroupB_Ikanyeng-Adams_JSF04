@@ -4,12 +4,28 @@
     <div v-else>
       <div class="container">
         <div class="form-group">
-          <select v-model="selectedCategory" @change="filterProducts" class="category-select">
+          <select
+            v-model="selectedCategory"
+            @change="filterProducts"
+            class="category-select"
+          >
             <option value="">All Categories</option>
-            <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
+            <option
+              v-for="category in categories"
+              :key="category"
+              :value="category"
+            >
+              {{ category }}
+            </option>
           </select>
           <div class="relative w-full">
-            <input type="search" class="search-input" placeholder="Search products..." v-model="searchQuery" @input="searchProducts" />
+            <input
+              type="search"
+              class="search-input"
+              placeholder="Search products..."
+              v-model="searchQuery"
+              @input="searchProducts"
+            />
             <button type="submit" class="search-button">
               <i class="fa fa-search"></i>
               <span class="sr-only">Search</span>
@@ -18,7 +34,12 @@
         </div>
         <div class="sort-group">
           <label for="sort" class="sort-label">Sort by</label>
-          <select id="sort" v-model="sortOption" @change="filterProducts" class="sort-select">
+          <select
+            id="sort"
+            v-model="sortOption"
+            @change="filterProducts"
+            class="sort-select"
+          >
             <option value="default">Default</option>
             <option value="low">Price: Low to High</option>
             <option value="high">Price: High to Low</option>
@@ -26,31 +47,69 @@
         </div>
       </div>
       <div class="products-container">
-        <p v-if="filteredProducts.length === 0" class="no-items-message">No items found</p>
-        <div v-else class="product-card" v-for="product in filteredProducts" :key="product.id">
+        <p v-if="filteredProducts.length === 0" class="no-items-message">
+          No items found
+        </p>
+        <div
+          v-else
+          class="product-card"
+          v-for="product in filteredProducts"
+          :key="product.id"
+        >
           <img :src="product.image" :alt="product.title" />
           <h2>{{ product.title }}</h2>
-          <p>{{ '$' + product.price }}</p>
+          <p>{{ "$" + product.price }}</p>
           <p>{{ product.category }}</p>
           <div class="rating">
-            <svg v-for="i in 5" :key="i" :class="i <= Math.round(product.rating.rate) ? 'filled' : 'empty'" viewBox="0 0 24 24">
-              <path d="M12 .587l3.668 7.571 8.332 1.151-6.063 5.852 1.428 8.287L12 18.897l-7.365 3.851 1.428-8.287-6.063-5.852 8.332-1.151z"/>
+            <svg
+              v-for="i in 5"
+              :key="i"
+              :class="i <= Math.round(product.rating.rate) ? 'filled' : 'empty'"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 .587l3.668 7.571 8.332 1.151-6.063 5.852 1.428 8.287L12 18.897l-7.365 3.851 1.428-8.287-6.063-5.852 8.332-1.151z"
+              />
             </svg>
           </div>
           <button class="view-button" @click="viewProduct(product.id)">
             <i class="fa fa-eye"></i> View Product
           </button>
-          
-          <div class="action-buttons">
-            <button @click="toggleWishlist(product)" :class="{'active': product.inWishlist}" class="wishlist-button">
-            <i :class="product.inWishlist ? 'fa fa-heart' : 'fa fa-heart'"></i>
-          </button>
 
-            <button @click="toggleCart(product)" :class="{'active': product.inCart}" class="cart-button">
-              <i :class="product.inCart ? 'fa fa-shopping-cart' : 'fa fa-cart-plus'"></i>
+          <div class="action-buttons">
+            <button
+              @click="toggleWishlist(product)"
+              :class="{ active: product.inWishlist }"
+              class="wishlist-button"
+            >
+              <i
+                :class="product.inWishlist ? 'fa fa-heart' : 'fa fa-heart'"
+              ></i>
             </button>
-            <button @click="toggleComparison(product)" :class="{'active': product.inComparison}" class="comparison-button">
-              <i :class="product.inComparison ? 'fa fa-balance-scale' : 'fa fa-balance-scale-right'"></i>
+
+            <button
+              @click="toggleCart(product)"
+              :class="{ active: product.inCart }"
+              class="cart-button"
+            >
+              <i
+                :class="
+                  product.inCart ? 'fa fa-shopping-cart' : 'fa fa-cart-plus'
+                "
+              ></i>
+            </button>
+            <button
+              @click="toggleComparison(product)"
+              :class="{ active: product.inComparison }"
+              class="comparison-button"
+            >
+              <i
+                :class="
+                  product.inComparison
+                    ? 'fa fa-balance-scale'
+                    : 'fa fa-balance-scale-right'
+                "
+              ></i>
             </button>
           </div>
         </div>
@@ -61,20 +120,20 @@
 </template>
 
 <script>
-import { ref, onMounted, inject } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, onMounted, inject } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
-  name: 'ProductList',
+  name: "ProductList",
   setup() {
-    const { selectedCategory, searchQuery, sortOption } = inject('filters');
+    const { selectedCategory, searchQuery, sortOption } = inject("filters");
     const products = ref([]);
     const filteredProducts = ref([]);
     const loading = ref(true);
     const categories = ref([]);
     const noItemsFound = ref(false);
     const router = useRouter();
-    const message = ref('');
+    const message = ref("");
 
     /**
      * Fetches the list of products from the API and filters them.
@@ -84,12 +143,14 @@ export default {
      */
     const fetchProducts = async () => {
       try {
-        const productsResponse = await fetch('https://fakestoreapi.com/products');
+        const productsResponse = await fetch(
+          "https://fakestoreapi.com/products"
+        );
         products.value = await productsResponse.json();
         loadStoredItems();
         filterProducts();
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       } finally {
         loading.value = false;
       }
@@ -100,14 +161,19 @@ export default {
      * @function loadStoredItems
      */
     const loadStoredItems = () => {
-      const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-      const storedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-      const storedComparison = JSON.parse(localStorage.getItem('comparison')) || [];
+      const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+      const storedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      const storedComparison =
+        JSON.parse(localStorage.getItem("comparison")) || [];
 
-      products.value.forEach(product => {
-        product.inCart = storedCart.some(item => item.id === product.id);
-        product.inWishlist = storedWishlist.some(item => item.id === product.id);
-        product.inComparison = storedComparison.some(item => item.id === product.id);
+      products.value.forEach((product) => {
+        product.inCart = storedCart.some((item) => item.id === product.id);
+        product.inWishlist = storedWishlist.some(
+          (item) => item.id === product.id
+        );
+        product.inComparison = storedComparison.some(
+          (item) => item.id === product.id
+        );
       });
     };
 
@@ -119,10 +185,12 @@ export default {
      */
     const fetchCategories = async () => {
       try {
-        const categoriesResponse = await fetch('https://fakestoreapi.com/products/categories');
+        const categoriesResponse = await fetch(
+          "https://fakestoreapi.com/products/categories"
+        );
         categories.value = await categoriesResponse.json();
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error("Error fetching categories:", error);
       }
     };
 
@@ -132,14 +200,19 @@ export default {
      */
     const filterProducts = () => {
       filteredProducts.value = products.value
-        .filter(product =>
-          (!selectedCategory.value || product.category === selectedCategory.value) &&
-          (!searchQuery.value || product.title.toLowerCase().includes(searchQuery.value.toLowerCase()))
+        .filter(
+          (product) =>
+            (!selectedCategory.value ||
+              product.category === selectedCategory.value) &&
+            (!searchQuery.value ||
+              product.title
+                .toLowerCase()
+                .includes(searchQuery.value.toLowerCase()))
         )
         .sort((a, b) => {
-          if (sortOption.value === 'low') {
+          if (sortOption.value === "low") {
             return a.price - b.price;
-          } else if (sortOption.value === 'high') {
+          } else if (sortOption.value === "high") {
             return b.price - a.price;
           } else {
             return 0;
@@ -173,8 +246,10 @@ export default {
      */
     const toggleWishlist = (product) => {
       product.inWishlist = !product.inWishlist;
-      updateLocalStorage('wishlist', product);
-      showMessage(product.inWishlist ? 'Added to wishlist' : 'Removed from wishlist');
+      updateLocalStorage("wishlist", product);
+      showMessage(
+        product.inWishlist ? "Added to wishlist" : "Removed from wishlist"
+      );
     };
 
     /**
@@ -184,8 +259,8 @@ export default {
      */
     const toggleCart = (product) => {
       product.inCart = !product.inCart;
-      updateLocalStorage('cart', product);
-      showMessage(product.inCart ? 'Added to cart' : 'Removed from cart');
+      updateLocalStorage("cart", product);
+      showMessage(product.inCart ? "Added to cart" : "Removed from cart");
     };
 
     /**
@@ -195,8 +270,10 @@ export default {
      */
     const toggleComparison = (product) => {
       product.inComparison = !product.inComparison;
-      updateLocalStorage('comparison', product);
-      showMessage(product.inComparison ? 'Added to comparison' : 'Removed from comparison');
+      updateLocalStorage("comparison", product);
+      showMessage(
+        product.inComparison ? "Added to comparison" : "Removed from comparison"
+      );
     };
 
     /**
@@ -210,7 +287,7 @@ export default {
       if (product[`in${capitalize(key)}`]) {
         storedItems.push(product);
       } else {
-        storedItems = storedItems.filter(item => item.id !== product.id);
+        storedItems = storedItems.filter((item) => item.id !== product.id);
       }
       localStorage.setItem(key, JSON.stringify(storedItems));
     };
@@ -231,7 +308,7 @@ export default {
     const showMessage = (msg) => {
       message.value = msg;
       setTimeout(() => {
-        message.value = '';
+        message.value = "";
       }, 1000);
     };
 
@@ -260,13 +337,11 @@ export default {
     };
   },
 };
-
 </script>
 
 <style scoped>
 /* Your existing CSS */
 </style>
-
 
 <style scoped>
 body {
@@ -335,7 +410,6 @@ body {
 .search-button i {
   font-size: 1rem;
 }
-
 
 .sort-select {
   background-color: #f3f4f6;

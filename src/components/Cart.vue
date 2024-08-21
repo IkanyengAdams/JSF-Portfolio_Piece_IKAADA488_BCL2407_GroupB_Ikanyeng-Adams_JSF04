@@ -10,13 +10,15 @@
           <img :src="item.image" :alt="item.title" />
           <div class="item-details">
             <h2>{{ item.title }}</h2>
-            <p>{{ '$' + item.price }}</p>
+            <p>{{ "$" + item.price }}</p>
             <div class="quantity-controls">
               <button @click="decreaseQuantity(item)">-</button>
               <span>{{ item.quantity }}</span>
               <button @click="increaseQuantity(item)">+</button>
             </div>
-            <button class="remove-button" @click="removeFromCart(item.id)">Remove</button>
+            <button class="remove-button" @click="removeFromCart(item.id)">
+              Remove
+            </button>
           </div>
         </div>
       </div>
@@ -24,7 +26,7 @@
         <h2>Order Summary</h2>
         <div class="summary-detail" v-if="cartItems.length > 0">
           <span>Total</span>
-          <span>{{ '$' + cartTotal }}</span>
+          <span>{{ "$" + cartTotal }}</span>
         </div>
         <button
           class="checkout-button"
@@ -33,7 +35,11 @@
         >
           Proceed to Checkout
         </button>
-        <button class="clear-cart-button" v-if="cartItems.length > 0" @click="clearCart">
+        <button
+          class="clear-cart-button"
+          v-if="cartItems.length > 0"
+          @click="clearCart"
+        >
           Clear Cart
         </button>
         <button class="back-button" @click="goToProductList">
@@ -48,10 +54,24 @@
 export default {
   data() {
     return {
+
+      /**
+       * The array of items currently in the cart.
+       * @type {Array<Object>}
+       * @property {number} id - Unique identifier for the cart item.
+       * @property {string} title - Title of the cart item.
+       * @property {string} image - URL of the cart item's image.
+       * @property {number} price - Price of the cart item.
+       * @property {number} quantity - Quantity of the cart item.
+       */
       cartItems: JSON.parse(localStorage.getItem("cart")) || [],
     };
   },
   computed: {
+     /**
+     * Computes the total price of all items in the cart.
+     * @returns {string} - Total price formatted to 2 decimal places.
+     */
     cartTotal() {
       const total = this.cartItems.reduce(
         (total, item) => total + item.price * item.quantity,
@@ -61,35 +81,62 @@ export default {
     },
   },
   methods: {
+    /**
+     * Increases the quantity of a specified cart item.
+     * @param {Object} item - The cart item to update.
+     */
     increaseQuantity(item) {
       item.quantity++;
       this.updateCart();
     },
+    /**
+     * Decreases the quantity of a specified cart item, ensuring it doesn't go below 1.
+     * @param {Object} item - The cart item to update.
+     */
     decreaseQuantity(item) {
       if (item.quantity > 1) {
         item.quantity--;
         this.updateCart();
       }
     },
+    /**
+     * Removes a specified cart item from the cart.
+     * @param {number} itemId - The ID of the item to remove.
+     */
     removeFromCart(itemId) {
       this.cartItems = this.cartItems.filter((item) => item.id !== itemId);
       this.updateCart();
     },
+     /**
+     * Clears all items from the cart.
+     */
     clearCart() {
       this.cartItems = [];
       this.updateCart();
     },
+     /**
+     * Updates the cart data in local storage.
+     */
     updateCart() {
       localStorage.setItem("cart", JSON.stringify(this.cartItems));
     },
+     /**
+     * Redirects the user to the checkout page.
+     */
     proceedToCheckout() {
-      this.$router.push('/checkout');
+      this.$router.push("/checkout");
     },
+    /**
+     * Redirects the user to the product list page.
+     */
     goToProductList() {
       this.$router.push("/");
     },
   },
   mounted() {
+    /**
+     * Ensures all items in the cart have a quantity set to 1 if not already set.
+     */
     this.cartItems.forEach((item) => {
       if (!item.quantity) {
         item.quantity = 1;
@@ -232,5 +279,4 @@ export default {
     max-width: 100%;
   }
 }
-
 </style>

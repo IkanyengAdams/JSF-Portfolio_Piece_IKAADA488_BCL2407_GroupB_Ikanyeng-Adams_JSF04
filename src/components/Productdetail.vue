@@ -6,12 +6,19 @@
     <div class="details-container">
       <h1 class="title">{{ product.title }}</h1>
       <p class="category">{{ product.category }}</p>
-      <p class="price">{{ '$' + product.price }}</p>
+      <p class="price">{{ "$" + product.price }}</p>
       <p class="description">{{ product.description }}</p>
       <div class="rating">
         <div class="rating-stars">
-          <svg v-for="i in 5" :key="i" :class="i <= Math.round(product.rating.rate) ? 'filled' : 'empty'" viewBox="0 0 24 24">
-            <path d="M12 .587l3.668 7.571 8.332 1.151-6.063 5.852 1.428 8.287L12 18.897l-7.365 3.851 1.428-8.287-6.063-5.852 8.332-1.151z"/>
+          <svg
+            v-for="i in 5"
+            :key="i"
+            :class="i <= Math.round(product.rating.rate) ? 'filled' : 'empty'"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 .587l3.668 7.571 8.332 1.151-6.063 5.852 1.428 8.287L12 18.897l-7.365 3.851 1.428-8.287-6.063-5.852 8.332-1.151z"
+            />
           </svg>
         </div>
         <p>{{ product.rating.count }} reviews</p>
@@ -23,19 +30,19 @@
 </template>
 
 <script>
-import { ref, onMounted, inject } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { ref, onMounted, inject } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 export default {
-  name: 'ProductDetail',
+  name: "ProductDetail",
   setup() {
     const route = useRoute();
     const router = useRouter();
     const product = ref({});
     const loading = ref(true);
-    const { selectedCategory, searchQuery, sortOption } = inject('filters');
+    const { selectedCategory, searchQuery, sortOption } = inject("filters");
 
-     /**
+    /**
      * Fetches the product details from the API based on the route parameter.
      * @async
      * @function fetchProduct
@@ -44,10 +51,12 @@ export default {
 
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`https://fakestoreapi.com/products/${route.params.id}`);
+        const response = await fetch(
+          `https://fakestoreapi.com/products/${route.params.id}`
+        );
         product.value = await response.json();
       } catch (error) {
-        console.error('Error fetching product:', error);
+        console.error("Error fetching product:", error);
       } finally {
         loading.value = false;
       }
@@ -59,10 +68,10 @@ export default {
      */
 
     const goBack = () => {
-      router.push('/');
+      router.push("/");
     };
 
-     // Lifecycle hook to fetch product details on component mount.
+    // Lifecycle hook to fetch product details on component mount.
     onMounted(fetchProduct);
 
     return {
@@ -76,7 +85,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .product-detail {
@@ -93,7 +101,7 @@ export default {
   margin: auto;
 }
 
-.title{
+.title {
   font-size: 30px;
 }
 
@@ -132,8 +140,8 @@ export default {
 }
 
 .rating {
-height: 8rem;
-width: 8rem;
+  height: 8rem;
+  width: 8rem;
 }
 
 .rating-stars {

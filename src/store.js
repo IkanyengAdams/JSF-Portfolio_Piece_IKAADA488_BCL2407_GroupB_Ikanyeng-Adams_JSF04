@@ -1,4 +1,4 @@
-import { createStore } from 'vuex';
+import { createStore } from "vuex";
 
 const store = createStore({
   state() {
@@ -17,10 +17,10 @@ const store = createStore({
   },
   actions: {
     updateCartCount({ commit }, count) {
-      commit('setCartCount', count);
+      commit("setCartCount", count);
     },
     updateWishlistCount({ commit }, count) {
-      commit('setWishlistCount', count);
+      commit("setWishlistCount", count);
     },
   },
   getters: {

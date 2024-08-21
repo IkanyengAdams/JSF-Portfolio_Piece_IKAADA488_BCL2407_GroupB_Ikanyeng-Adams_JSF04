@@ -4,7 +4,6 @@
     <div class="max-products-message">Maximum products: 4</div>
     <div v-if="comparisonItems.length > 0">
       <table class="comparison-table">
-        
         <tbody>
           <tr>
             <td class="label">Title</td>
@@ -27,7 +26,7 @@
           <tr>
             <td class="label">Price</td>
             <td v-for="item in limitedComparisonItems" :key="item.id">
-              <div class="product-price">{{ '$' + item.price }}</div>
+              <div class="product-price">{{ "$" + item.price }}</div>
             </td>
           </tr>
           <tr>
@@ -35,24 +34,44 @@
             <td v-for="item in limitedComparisonItems" :key="item.id">
               <div class="rating">
                 <div class="stars">
-                  <svg v-for="i in 5" :key="i" :class="i <= Math.round(item.rating.rate) ? 'filled' : 'empty'" viewBox="0 0 24 24">
-                    <path d="M12 .587l3.668 7.571 8.332 1.151-6.063 5.852 1.428 8.287L12 18.897l-7.365 3.851 1.428-8.287-6.063-5.852 8.332-1.151z"/>
+                  <svg
+                    v-for="i in 5"
+                    :key="i"
+                    :class="
+                      i <= Math.round(item.rating.rate) ? 'filled' : 'empty'
+                    "
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 .587l3.668 7.571 8.332 1.151-6.063 5.852 1.428 8.287L12 18.897l-7.365 3.851 1.428-8.287-6.063-5.852 8.332-1.151z"
+                    />
                   </svg>
                 </div>
-                <span class="review-count">{{ item.rating.count }} reviews</span>
-                <button @click="removeFromComparison(item.id)" class="remove-button">Remove</button>
+                <span class="review-count"
+                  >{{ item.rating.count }} reviews</span
+                >
+                <button
+                  @click="removeFromComparison(item.id)"
+                  class="remove-button"
+                >
+                  Remove
+                </button>
               </div>
             </td>
           </tr>
         </tbody>
       </table>
       <div class="button-container">
-        <button @click="clearComparisonList" class="action-button">Clear Comparison List</button>
+        <button @click="clearComparisonList" class="action-button">
+          Clear Comparison List
+        </button>
       </div>
     </div>
     <div v-else class="no-items-message">No items to compare</div>
     <div class="button-container">
-      <button @click="goToProductList" class="action-button">Back to Product List</button>
+      <button @click="goToProductList" class="action-button">
+        Back to Product List
+      </button>
     </div>
   </div>
 </template>
@@ -61,27 +80,55 @@
 export default {
   data() {
     return {
-      comparisonItems: JSON.parse(localStorage.getItem('comparison')) || []
+      /**
+       * Array of products to be compared.
+       * @type {Array<Object>}
+       * @property {number} id - Unique identifier for the product.
+       * @property {string} title - Title of the product.
+       * @property {string} image - URL of the product image.
+       * @property {string} description - Description of the product.
+       * @property {number} price - Price of the product.
+       * @property {Object} rating - Rating details of the product.
+       * @property {number} rating.rate - Rating value.
+       * @property {number} rating.count - Number of reviews.
+       */
+      comparisonItems: JSON.parse(localStorage.getItem("comparison")) || [],
     };
   },
   computed: {
+    /**
+     * Limits the number of products displayed to a maximum of 4.
+     * @returns {Array<Object>} Array of products to be compared.
+     */
     limitedComparisonItems() {
       return this.comparisonItems.slice(0, 4);
-    }
+    },
   },
   methods: {
+    /**
+     * Redirects to the product list page.
+     */
     goToProductList() {
-      this.$router.push('/');
+      this.$router.push("/");
     },
+    /**
+     * Clears the comparison list from local storage and updates the `comparisonItems` data property.
+     */
     clearComparisonList() {
-      localStorage.removeItem('comparison');
+      localStorage.removeItem("comparison");
       this.comparisonItems = [];
     },
+    /**
+     * Removes a product from the comparison list based on its ID.
+     * @param {number} itemId - ID of the product to be removed.
+     */
     removeFromComparison(itemId) {
-      this.comparisonItems = this.comparisonItems.filter(item => item.id !== itemId);
-      localStorage.setItem('comparison', JSON.stringify(this.comparisonItems));
-    }
-  }
+      this.comparisonItems = this.comparisonItems.filter(
+        (item) => item.id !== itemId
+      );
+      localStorage.setItem("comparison", JSON.stringify(this.comparisonItems));
+    },
+  },
 };
 </script>
 
@@ -94,7 +141,8 @@ export default {
   margin-bottom: 1rem;
 }
 
-.comparison-table th, .comparison-table td {
+.comparison-table th,
+.comparison-table td {
   padding: 0.5rem;
   border: 1px solid #ddd;
   text-align: center;
@@ -114,7 +162,8 @@ export default {
   font-weight: bold;
 }
 
-.product-description, .product-price {
+.product-description,
+.product-price {
   text-align: center;
 }
 
@@ -203,9 +252,9 @@ export default {
   color: #888;
 }
 
-
 @media (max-width: 768px) {
-  .comparison-table th, .comparison-table td {
+  .comparison-table th,
+  .comparison-table td {
     padding: 0.25rem;
   }
 
@@ -233,7 +282,8 @@ export default {
 }
 
 @media (max-width: 480px) {
-  .comparison-table th, .comparison-table td {
+  .comparison-table th,
+  .comparison-table td {
     padding: 0.5rem 0.25rem;
   }
 
@@ -255,7 +305,8 @@ export default {
     font-size: 0.75rem;
   }
 
-  .no-items-message, .max-products-message {
+  .no-items-message,
+  .max-products-message {
     font-size: 1rem;
   }
 }

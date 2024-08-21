@@ -6,7 +6,11 @@
         <label for="category">Filter by Category:</label>
         <select v-model="selectedCategory" @change="filterWishlist">
           <option value="">All Categories</option>
-          <option v-for="category in categories" :key="category" :value="category">
+          <option
+            v-for="category in categories"
+            :key="category"
+            :value="category"
+          >
             {{ category }}
           </option>
         </select>
@@ -26,30 +30,42 @@
     </div>
 
     <div class="wishlist-content">
-      <div v-if="filteredWishlistItems.length === 0 && wishlistItems.length > 0" class="no-products-message">
+      <div
+        v-if="filteredWishlistItems.length === 0 && wishlistItems.length > 0"
+        class="no-products-message"
+      >
         No products found.
       </div>
 
       <div v-else class="wishlist-items">
-        <div v-for="item in filteredWishlistItems" :key="item.id" class="wishlist-item">
+        <div
+          v-for="item in filteredWishlistItems"
+          :key="item.id"
+          class="wishlist-item"
+        >
           <img :src="item.image" :alt="item.title" />
           <div class="item-details">
             <h2>{{ item.title }}</h2>
-            <p>{{ '$' + item.price }}</p>
+            <p>{{ "$" + item.price }}</p>
             <div class="item-buttons">
-              <button class="remove-button" @click="removeFromWishlist(item.id)">
+              <button
+                class="remove-button"
+                @click="removeFromWishlist(item.id)"
+              >
                 Remove
               </button>
               <button class="view-button" @click="viewProduct(item.id)">
                 View Product
               </button>
               <button class="add-to-cart-button" @click="toggleCart(item)">
-                {{ isInCart(item.id) ? 'Remove from Cart' : 'Add to Cart' }}
+                {{ isInCart(item.id) ? "Remove from Cart" : "Add to Cart" }}
               </button>
             </div>
           </div>
         </div>
-        <button class="clear-all-button" @click="clearWishlist">Clear All</button>
+        <button class="clear-all-button" @click="clearWishlist">
+          Clear All
+        </button>
       </div>
       <button class="back-button" @click="goToProductList">
         Back to Product List
@@ -62,14 +78,38 @@
 export default {
   data() {
     return {
+      /**
+       * List of items in the wishlist.
+       * @type {Array}
+       */
       wishlistItems: JSON.parse(localStorage.getItem("wishlist")) || [],
+       /**
+       * List of items in the cart.
+       * @type {Array}
+       */
       cartItems: JSON.parse(localStorage.getItem("cart")) || [],
+       /**
+       * List of product categories.
+       * @type {Array}
+       */
       categories: [],
-      selectedCategory: '',
-      selectedSort: 'asc',
+       /**
+       * Currently selected category for filtering.
+       * @type {string}
+       */
+      selectedCategory: "",
+      /**
+       * Current sorting option for price.
+       * @type {string}
+       */
+      selectedSort: "asc",
     };
   },
   computed: {
+    /**
+     * Filters and sorts the wishlist items based on selected category and sorting option.
+     * @returns {Array} The filtered and sorted wishlist items.
+     */
     filteredWishlistItems() {
       let filteredItems = this.wishlistItems;
 
@@ -79,66 +119,109 @@ export default {
         );
       }
 
-      if (this.selectedSort === 'asc') {
+      if (this.selectedSort === "asc") {
         filteredItems.sort((a, b) => a.price - b.price);
-      } else if (this.selectedSort === 'desc') {
+      } else if (this.selectedSort === "desc") {
         filteredItems.sort((a, b) => b.price - a.price);
       }
 
       return filteredItems;
-    }
+    },
   },
   created() {
     this.fetchCategories();
   },
   methods: {
+     /**
+     * Fetches the list of product categories from the API.
+     * @async
+     */
     async fetchCategories() {
       try {
-        const response = await fetch("https://fakestoreapi.com/products/categories");
+        const response = await fetch(
+          "https://fakestoreapi.com/products/categories"
+        );
         this.categories = await response.json();
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error("Error fetching categories:", error);
       }
     },
+    /**
+     * Removes an item from the wishlist based on its ID.
+     * @param {number} itemId - The ID of the item to remove.
+     */
     removeFromWishlist(itemId) {
-      const updatedWishlist = this.wishlistItems.filter(item => item.id !== itemId);
+      const updatedWishlist = this.wishlistItems.filter(
+        (item) => item.id !== itemId
+      );
       this.wishlistItems = updatedWishlist;
       this.updateWishlist();
     },
+    /**
+     * Clears all items from the wishlist.
+     */
     clearWishlist() {
       this.wishlistItems = [];
       this.updateWishlist();
     },
+     /**
+     * Updates the wishlist stored in localStorage.
+     */
     updateWishlist() {
       localStorage.setItem("wishlist", JSON.stringify(this.wishlistItems));
     },
+    /**
+     * Updates the cart stored in localStorage.
+     */
     updateCart() {
       localStorage.setItem("cart", JSON.stringify(this.cartItems));
     },
+      /**
+     * Navigates to the product detail page for the given product ID.
+     * @param {number} productId - The ID of the product to view.
+     */
     async viewProduct(productId) {
-      this.$router.push({ name: 'ProductDetail', params: { id: productId } });
+      this.$router.push({ name: "ProductDetail", params: { id: productId } });
     },
+    /**
+     * Toggles the cart state of an item.
+     * @param {Object} item - The item to add or remove from the cart.
+     */
     toggleCart(item) {
       if (this.isInCart(item.id)) {
-        this.cartItems = this.cartItems.filter(cartItem => cartItem.id !== item.id);
+        this.cartItems = this.cartItems.filter(
+          (cartItem) => cartItem.id !== item.id
+        );
       } else {
         this.cartItems.push(item);
       }
       this.updateCart();
     },
+    /**
+     * Checks if an item is currently in the cart.
+     * @param {number} itemId - The ID of the item to check.
+     * @returns {boolean} True if the item is in the cart, otherwise false.
+     */
     isInCart(itemId) {
-      return this.cartItems.some(item => item.id === itemId);
+      return this.cartItems.some((item) => item.id === itemId);
     },
-    filterWishlist() {
-
-    },
-    sortWishlist() {
-      
-    },
+     /**
+     * Filters the wishlist items based on the selected category.
+     * (Currently empty but can be implemented in the future.)
+     */
+    filterWishlist() {},
+    /**
+     * Sorts the wishlist items based on the selected sorting option.
+     * (Currently empty but can be implemented in the future.)
+     */
+    sortWishlist() {},
+    /**
+     * Navigates back to the product list page.
+     */
     goToProductList() {
       this.$router.push("/");
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -161,7 +244,8 @@ export default {
   margin-bottom: 1rem;
 }
 
-.filter-category, .sort-price {
+.filter-category,
+.sort-price {
   display: flex;
   flex-direction: column;
 }

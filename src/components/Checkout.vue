@@ -34,33 +34,53 @@
 export default {
   data() {
     return {
+      /**
+       * The user's personal information for the checkout process.
+       * @type {Object}
+       * @property {string} name - The name of the user.
+       * @property {string} address - The residential address of the user.
+       * @property {string} email - The email address of the user.
+       */
       user: {
-        name: '',
-        address: '',
-        email: ''
-      }
+        name: "",
+        address: "",
+        email: "",
+      },
     };
   },
   created() {
+    /**
+     * Automatically fills in user information from local storage when the component is created.
+     */
+
     this.autoFillUserInfo();
   },
   methods: {
+    /**
+     * Retrieves user information from local storage and updates the `user` data property.
+     */
     autoFillUserInfo() {
-      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
       if (userInfo) {
-        this.user.name = userInfo.name || '';
-        this.user.address = userInfo.address || '';
-        this.user.email = userInfo.email || '';
+        this.user.name = userInfo.name || "";
+        this.user.address = userInfo.address || "";
+        this.user.email = userInfo.email || "";
       }
     },
+    /**
+     * Saves the user's information to local storage and redirects to the checkout page.
+     */
     proceedToPayment() {
-      localStorage.setItem('userInfo', JSON.stringify(this.user));
-      this.$router.push('/checkout');
+      localStorage.setItem("userInfo", JSON.stringify(this.user));
+      this.$router.push("/checkout");
     },
+    /**
+     * Redirects the user back to the cart page.
+     */
     goToCart() {
-      this.$router.push('/cart');
-    }
-  }
+      this.$router.push("/cart");
+    },
+  },
 };
 </script>
 

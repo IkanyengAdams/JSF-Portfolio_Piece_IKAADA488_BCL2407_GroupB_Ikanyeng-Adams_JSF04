@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <h1>{{ isLoggedIn ? 'Logged in' : 'Login Page' }}</h1>
+    <h1>{{ isLoggedIn ? "Logged in" : "Login Page" }}</h1>
     <p v-if="isLoggedIn" class="login-status">You are currently logged in</p>
     <form v-if="!isLoggedIn" @submit.prevent="login">
       <div class="form-group">
@@ -10,7 +10,12 @@
       <div class="form-group">
         <label for="password">Password:</label>
         <div class="password-wrapper">
-          <input :type="passwordFieldType" v-model="password" id="password" required />
+          <input
+            :type="passwordFieldType"
+            v-model="password"
+            id="password"
+            required
+          />
           <font-awesome-icon
             :icon="passwordVisible ? 'eye' : 'eye-slash'"
             @click="togglePasswordVisibility"
@@ -26,68 +31,99 @@
     <div v-if="isLoggedIn" class="logout-container">
       <button @click="logout" class="logout-button">Logout</button>
     </div>
-    <button @click="goToProductList" class="back-button">Back to Product List</button>
+    <button @click="goToProductList" class="back-button">
+      Back to Product List
+    </button>
     <p v-if="message" class="message">{{ message }}</p>
   </div>
 </template>
 
 <script>
-import axiosAuth from '../axiosAuth';
+import axiosAuth from "../axiosAuth";
+
+/**
+ * Login component for user authentication.
+ * @component
+ */
 
 export default {
   data() {
     return {
-      username: '',
-      password: '',
+      username: "",
+      password: "",
       passwordVisible: false,
-      isLoggedIn: !!localStorage.getItem('token'),
+      isLoggedIn: !!localStorage.getItem("token"),
       loading: false,
-      message: '',
+      message: "",
     };
   },
   computed: {
+    /**
+ * Login component for user authentication.
+ * @component
+ */
     passwordFieldType() {
-      return this.passwordVisible ? 'text' : 'password';
+      return this.passwordVisible ? "text" : "password";
     },
   },
   methods: {
+    /**
+     * Toggles the visibility of the password field.
+     */
     togglePasswordVisibility() {
       this.passwordVisible = !this.passwordVisible;
     },
+    /**
+     * Handles user login by sending credentials to the API.
+     * Sets the token in localStorage and updates login state.
+     * Displays a success message and redirects to the home page upon success.
+     * @async
+     */
     async login() {
       this.loading = true;
       try {
-        const response = await axiosAuth.post('auth/login', {
+        const response = await axiosAuth.post("auth/login", {
           username: this.username,
           password: this.password,
         });
         const token = response.data.token;
-        localStorage.setItem('token', token);
+        localStorage.setItem("token", token);
         this.isLoggedIn = true;
         this.loading = false;
-        this.showMessage('Logged in successfully');
+        this.showMessage("Logged in successfully");
 
         setTimeout(() => {
-          this.$router.push('/');
+          this.$router.push("/");
         }, 1500);
       } catch (error) {
-        console.error('Login failed:', error);
+        console.error("Login failed:", error);
         this.loading = false;
-        this.showMessage('Login failed. Please check your credentials.');
+        this.showMessage("Login failed. Please check your credentials.");
       }
     },
+     /**
+     * Logs out the user by removing the token from localStorage
+     * and updating the login state.
+     */
     logout() {
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
       this.isLoggedIn = false;
-      this.showMessage('Logged out successfully');
+      this.showMessage("Logged out successfully");
     },
+     /**
+     * Navigates to the product list page.
+     */
     goToProductList() {
-      this.$router.push('/');
+      this.$router.push("/");
     },
+      /**
+     * Displays a message for a short duration.
+     * @param {string} msg - The message to display.
+     */
     showMessage(msg) {
       this.message = msg;
       setTimeout(() => {
-        this.message = '';
+        this.message = "";
       }, 2000);
     },
   },

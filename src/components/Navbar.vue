@@ -2,7 +2,11 @@
   <header>
     <nav class="navbar">
       <div>
-        <img src="/public/android-chrome-192x192.png" alt="logo-icon" class="logo-icon">
+        <img
+          src="/android-chrome-192x192.png"
+          alt="logo-icon"
+          class="logo-icon"
+        />
         <span class="heading" @click="goToProductList">SwiftCart</span>
       </div>
       <div class="navbar-items">
@@ -22,7 +26,7 @@
         </span>
         <span class="navbar-item" @click="handleLoginClick">
           <i class="fas fa-user"></i>
-          <strong>{{ isLoggedIn ? 'Logged in' : 'Login' }}</strong>
+          <strong>{{ isLoggedIn ? "Logged in" : "Login" }}</strong>
         </span>
       </div>
       <button class="btn-toggle menu-icon" @click="toggleSidebar">
@@ -46,7 +50,7 @@
         </span>
         <span class="sidebar-item" @click="handleLoginClick">
           <i class="fas fa-user"></i>
-          <strong>{{ isLoggedIn ? 'Logged in' : 'Login' }}</strong>
+          <strong>{{ isLoggedIn ? "Logged in" : "Login" }}</strong>
         </span>
       </div>
     </div>
@@ -54,17 +58,16 @@
   </header>
 </template>
 
-
 <script>
 export default {
   data() {
     return {
       openSidebar: false,
       isMobile: window.innerWidth <= 768,
-      isLoggedIn: !!localStorage.getItem('token'),
+      isLoggedIn: !!localStorage.getItem("token"),
       notification: null,
       cartItemCount: this.getCartItemCount(),
-      wishlistItemCount: this.getWishlistItemCount()
+      wishlistItemCount: this.getWishlistItemCount(),
     };
   },
   methods: {
@@ -81,7 +84,7 @@ export default {
      * @function goToProductList
      */
     goToProductList() {
-      this.$router.push('/');
+      this.$router.push("/");
       this.closeSidebar();
     },
 
@@ -91,10 +94,10 @@ export default {
      */
     goToWishlist() {
       if (!this.isLoggedIn) {
-        this.showNotification('You need to login first');
+        this.showNotification("You need to login first");
         return;
       }
-      this.$router.push('/wishlist');
+      this.$router.push("/wishlist");
     },
 
     /**
@@ -103,10 +106,10 @@ export default {
      */
     goToComparison() {
       if (!this.isLoggedIn) {
-        this.showNotification('You need to login first');
+        this.showNotification("You need to login first");
         return;
       }
-      this.$router.push('/comparison');
+      this.$router.push("/comparison");
     },
 
     /**
@@ -115,10 +118,10 @@ export default {
      */
     goToCart() {
       if (!this.isLoggedIn) {
-        this.showNotification('You need to login first');
+        this.showNotification("You need to login first");
         return;
       }
-      this.$router.push('/cart');
+      this.$router.push("/cart");
     },
 
     /**
@@ -126,7 +129,7 @@ export default {
      * @function handleLoginClick
      */
     handleLoginClick() {
-      this.$router.push('/login');
+      this.$router.push("/login");
     },
 
     /**
@@ -138,8 +141,8 @@ export default {
       this.notification = message;
       setTimeout(() => {
         this.notification = null;
-        this.$router.push('/login');
-      }, 2000); 
+        this.$router.push("/login");
+      }, 2000);
     },
 
     /**
@@ -194,7 +197,7 @@ export default {
      * @returns {number} The number of items in the cart
      */
     getCartItemCount() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
       return cart.length;
     },
 
@@ -204,7 +207,7 @@ export default {
      * @returns {number} The number of items in the wishlist
      */
     getWishlistItemCount() {
-      const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
       return wishlist.length;
     },
 
@@ -215,19 +218,19 @@ export default {
     updateItemCounts() {
       this.cartItemCount = this.getCartItemCount();
       this.wishlistItemCount = this.getWishlistItemCount();
-    }
+    },
   },
   mounted() {
-    window.addEventListener('resize', this.handleResize);
-    window.addEventListener('storage', this.updateItemCounts);
+    window.addEventListener("resize", this.handleResize);
+    window.addEventListener("storage", this.updateItemCounts);
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.handleResize);
-    window.removeEventListener('storage', this.updateItemCounts);
+    window.removeEventListener("resize", this.handleResize);
+    window.removeEventListener("storage", this.updateItemCounts);
   },
   watch: {
-    '$route'() {
-      this.isLoggedIn = !!localStorage.getItem('token');
+    $route() {
+      this.isLoggedIn = !!localStorage.getItem("token");
       if (!this.isLoggedIn) {
         this.cartItemCount = 0;
         this.wishlistItemCount = 0;
@@ -235,8 +238,8 @@ export default {
         this.cartItemCount = this.getCartItemCount();
         this.wishlistItemCount = this.getWishlistItemCount();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

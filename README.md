@@ -91,6 +91,9 @@ Responsive Components: Navbar, product cards, and buttons adjust for optimal usa
 
 [Deployed project link](https://portfolio-ikaada-488-bcl-2407-group-b-ikanyeng-adams-jsf-04.vercel.app/)
 
+[Youtube video](https://youtu.be/C801PJAGeF0)
+
+
 
 
 

@@ -1,11 +1,7 @@
 <template>
   <div class="wishlist-container">
     <h1>Shopping Wishlist</h1>
-    <div v-if="wishlistItems.length === 0" class="empty-wishlist-message">
-      Your wishlist is empty.
-    </div>
-
-    <div class="sort-filter-container" v-if="wishlistItems.length > 0">
+    <div class="sort-filter-container">
       <div class="filter-category">
         <label for="category">Filter by Category:</label>
         <select v-model="selectedCategory" @change="filterWishlist">
@@ -25,8 +21,12 @@
       </div>
     </div>
 
+    <div v-if="wishlistItems.length === 0" class="empty-wishlist-message">
+      Your wishlist is empty.
+    </div>
+
     <div class="wishlist-content">
-      <div v-if="filteredWishlistItems.length === 0" class="no-products-message">
+      <div v-if="filteredWishlistItems.length === 0 && wishlistItems.length > 0" class="no-products-message">
         No products found.
       </div>
 
@@ -130,8 +130,10 @@ export default {
       return this.cartItems.some(item => item.id === itemId);
     },
     filterWishlist() {
+
     },
     sortWishlist() {
+      
     },
     goToProductList() {
       this.$router.push("/");

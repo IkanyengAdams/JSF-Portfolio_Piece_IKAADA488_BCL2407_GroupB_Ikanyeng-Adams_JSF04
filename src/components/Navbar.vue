@@ -9,6 +9,7 @@
         <span class="navbar-item" @click="goToWishlist">
           <i class="fas fa-heart"></i>
           <strong>Wishlist</strong>
+          <span class="wishlist-item-count">{{ wishlistItemCount }}</span>
         </span>
         <span class="navbar-item" @click="goToComparison">
           <i class="fas fa-exchange-alt"></i>
@@ -17,6 +18,7 @@
         <span class="navbar-item" @click="goToCart">
           <i class="fas fa-shopping-cart"></i>
           <strong>Cart</strong>
+          <span class="cart-item-count">{{ cartItemCount }}</span>
         </span>
         <span class="navbar-item" @click="handleLoginClick">
           <i class="fas fa-user"></i>
@@ -52,6 +54,7 @@
   </header>
 </template>
 
+
 <script>
 export default {
   data() {
@@ -60,10 +63,11 @@ export default {
       isMobile: window.innerWidth <= 768,
       isLoggedIn: !!localStorage.getItem('token'),
       notification: null,
+      cartItemCount: this.getCartItemCount(),
+      wishlistItemCount: this.getWishlistItemCount()
     };
   },
   methods: {
-
     /**
      * Toggles the visibility of the sidebar.
      * @function toggleSidebar
@@ -182,22 +186,59 @@ export default {
       if (!this.isMobile) {
         this.closeSidebar();
       }
+    },
+
+    /**
+     * Gets the count of items in the cart from local storage.
+     * @function getCartItemCount
+     * @returns {number} The number of items in the cart
+     */
+    getCartItemCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      return cart.length;
+    },
+
+    /**
+     * Gets the count of items in the wishlist from local storage.
+     * @function getWishlistItemCount
+     * @returns {number} The number of items in the wishlist
+     */
+    getWishlistItemCount() {
+      const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      return wishlist.length;
+    },
+
+    /**
+     * Updates cart and wishlist item counts on storage changes.
+     * @function updateItemCounts
+     */
+    updateItemCounts() {
+      this.cartItemCount = this.getCartItemCount();
+      this.wishlistItemCount = this.getWishlistItemCount();
     }
   },
   mounted() {
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('storage', this.updateItemCounts);
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('storage', this.updateItemCounts);
   },
   watch: {
     '$route'() {
-      this.isLoggedIn = !!localStorage.getItem('token'); 
+      this.isLoggedIn = !!localStorage.getItem('token');
+      if (!this.isLoggedIn) {
+        this.cartItemCount = 0;
+        this.wishlistItemCount = 0;
+      } else {
+        this.cartItemCount = this.getCartItemCount();
+        this.wishlistItemCount = this.getWishlistItemCount();
+      }
     }
   }
 };
 </script>
-
 
 <style scoped>
 .navbar {
@@ -236,10 +277,41 @@ export default {
   cursor: pointer;
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .navbar-item i {
   margin-right: 0.5rem;
+}
+
+.cart-item-count {
+  position: absolute;
+  top: -10px;
+  right: 30px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.wishlist-item-count {
+  position: absolute;
+  top: -10px;
+  right: 55px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
 }
 
 .menu-icon {

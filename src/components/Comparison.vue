@@ -4,30 +4,34 @@
     <div class="max-products-message">Maximum products: 4</div>
     <div v-if="comparisonItems.length > 0">
       <table class="comparison-table">
-        <thead>
-          <tr>
-            <th v-for="item in limitedComparisonItems" :key="item.id">
-              <div class="product-title">{{ item.title }}</div>
-            </th>
-          </tr>
-        </thead>
+        
         <tbody>
           <tr>
+            <td class="label">Title</td>
+            <td v-for="item in limitedComparisonItems" :key="item.id">
+              <div class="product-title">{{ item.title }}</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">Image</td>
             <td v-for="item in limitedComparisonItems" :key="item.id">
               <img :src="item.image" :alt="item.title" class="product-image" />
             </td>
           </tr>
           <tr>
+            <td class="label">Description</td>
             <td v-for="item in limitedComparisonItems" :key="item.id">
               <div class="product-description">{{ item.description }}</div>
             </td>
           </tr>
           <tr>
+            <td class="label">Price</td>
             <td v-for="item in limitedComparisonItems" :key="item.id">
               <div class="product-price">{{ '$' + item.price }}</div>
             </td>
           </tr>
           <tr>
+            <td class="label">Rating</td>
             <td v-for="item in limitedComparisonItems" :key="item.id">
               <div class="rating">
                 <div class="stars">
@@ -97,6 +101,12 @@ export default {
 }
 
 .comparison-table th {
+  background-color: #f4f4f4;
+}
+
+.comparison-table td.label {
+  text-align: left;
+  font-weight: bold;
   background-color: #f4f4f4;
 }
 
@@ -249,5 +259,4 @@ export default {
     font-size: 1rem;
   }
 }
-
 </style>

@@ -4,12 +4,19 @@ This is a comprehensive e-commerce application built with Vue.js, designed to pr
 # Table of Contents
 
 1.Introduction
+
 2.Features
+
 3.Technologies Used
+
 4.Installation
+
 5.Usage
+
 6.Components
+
 7.API
+
 8.Responsive Design
 
 # Introduction

@@ -54,6 +54,7 @@
   </header>
 </template>
 
+
 <script>
 export default {
   data() {
@@ -327,15 +328,12 @@ export default {
   top: 0;
   left: 0;
   bottom: 0;
-  width: 250px;
+  width: 220px;
   background-color: blue;
-  color: white;
   transform: translateX(-100%);
-  transition: transform 0.3s ease-in-out;
-  z-index: 1001;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
+  transition: transform 0.8s ease-out;
+  z-index: 999;
+  padding-top: 70px;
 }
 
 .sidebar.open {
@@ -345,8 +343,9 @@ export default {
 .sidebar-items {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  margin-top: 2rem;
+  gap: 1rem;
+  padding: 1rem;
+  color: white;
 }
 
 .sidebar-item {
@@ -356,31 +355,47 @@ export default {
 }
 
 .sidebar-item i {
-  margin-right: 1rem;
+  margin-right: 0.5rem;
 }
 
 .close-icon {
   align-self: flex-end;
   cursor: pointer;
-  font-size: 2rem;
-}
-
-.notification {
-  background-color: lightgreen;
-  color: black;
-  padding: 0.5rem;
-  text-align: center;
-  border-radius: 5px;
-  margin-top: 2rem;
+  font-size: 1.5rem;
 }
 
 @media (max-width: 768px) {
-  .navbar-items {
-    display: none;
-  }
-
   .menu-icon {
     display: block;
   }
+  .navbar-items {
+    display: none;
+  }
+}
+
+.logout-button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-left: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: darkred;
+}
+
+.notification {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: hsl(0, 95%, 61%);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  z-index: 2000;
 }
 </style>
